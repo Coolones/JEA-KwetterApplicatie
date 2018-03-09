@@ -1,13 +1,18 @@
 package Service;
 
-import DAO.KwetterDAO;
+import DAO.KweetDAO;
+import DAO.ProfileDAO;
 
 public class KwetterService {
 
-    private KwetterDAO kwetterDAO;
+    private ProfileDAO profileDAO;
+    private KweetDAO kweetDAO;
 
-    public KwetterService(KwetterDAO kwetterDAO) {
+    public KwetterService() {
 
-        this.kwetterDAO = kwetterDAO;
+        this.profileDAO = new ProfileDAO();
+        this.kweetDAO = new KweetDAO();
     }
+
+
 }
