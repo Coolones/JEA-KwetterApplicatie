@@ -3,14 +3,19 @@ package DAO;
 import Domain.Kweet;
 import Domain.Profile;
 import Domain.Role;
+import Exceptions.ProfileException;
 import iDAO.IProfileDAO;
 
+import javax.ejb.Stateless;
+import javax.enterprise.inject.Default;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Stateless
+@Default
 public class ProfileDAO implements IProfileDAO {
 
     private Map<String, Profile> profiles;
@@ -37,9 +42,11 @@ public class ProfileDAO implements IProfileDAO {
     }
 
     @Override
-    public Profile AddProfile(String userTag, String userName, Role role, Image profilePicture, String bio, String location, String websiteURL) throws IllegalArgumentException {
+    public Profile AddProfile(String userTag, String userName, Image profilePicture, String bio, String location, String websiteURL) throws ProfileException {
 
-        Profile profile = new Profile(userTag, userName, role, profilePicture, bio, location, websiteURL);
+        if (!IsUniqueUserTag(userTag)) throw new ProfileException("UserTag is already in use");
+
+        Profile profile = new Profile(userTag, userName, profilePicture, bio, location, websiteURL);
         AddProfileToMaps(profile);
 
         return profile;
@@ -47,7 +54,8 @@ public class ProfileDAO implements IProfileDAO {
 
     @Override
     public boolean IsUniqueUserTag(String userTag) {
-        return false;
+        if (profiles.containsKey(userTag)) return false;
+        else return true;
     }
 
     @Override
@@ -56,7 +64,7 @@ public class ProfileDAO implements IProfileDAO {
     }
 
     @Override
-    public void setRole(String userTag, Role role) {
+    public void setRole(String userTag, Role role) throws ProfileException {
         getProfile(userTag).setRole(role);
     }
 
@@ -66,7 +74,7 @@ public class ProfileDAO implements IProfileDAO {
     }
 
     @Override
-    public void setBio(String userTag, String bio) {
+    public void setBio(String userTag, String bio) throws ProfileException {
         getProfile(userTag).setBio(bio);
     }
 
@@ -81,7 +89,7 @@ public class ProfileDAO implements IProfileDAO {
     }
 
     @Override
-    public void FollowOhter(String userTag, String userTag2) {
+    public void FollowOther(String userTag, String userTag2) {
         getProfile(userTag).FollowOther(userTag2);
     }
 

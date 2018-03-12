@@ -1,10 +1,15 @@
 package DAO;
 
 import Domain.Kweet;
+import Exceptions.KweetException;
 import iDAO.IKweetDAO;
 
+import javax.ejb.Stateless;
+import javax.enterprise.inject.Default;
 import java.util.*;
 
+@Stateless
+@Default
 public class KweetDAO implements IKweetDAO {
 
     private Map<Integer, Kweet> kweetID;
@@ -62,7 +67,7 @@ public class KweetDAO implements IKweetDAO {
     }
 
     @Override
-    public Kweet AddKweet(String ownerTag, String kweet) throws IllegalArgumentException {
+    public Kweet AddKweet(String ownerTag, String kweet) throws KweetException {
 
         Kweet obj = new Kweet(kweetID.size() + 1, ownerTag, kweet);
 

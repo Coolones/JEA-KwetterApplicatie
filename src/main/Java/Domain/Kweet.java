@@ -1,5 +1,7 @@
 package Domain;
 
+import Exceptions.KweetException;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -14,10 +16,10 @@ public class Kweet {
     private List<String> trends;
     private List<String> appreciatedBy;
 
-    public Kweet(int kweetID, String ownerTag, String kweet) {
+    public Kweet(int kweetID, String ownerTag, String kweet) throws KweetException {
 
         if (ownerTag.isEmpty() || kweet.isEmpty() || kweet.length() > 140) {
-            throw new IllegalArgumentException();
+            throw new KweetException("Something went wrong");
         }
 
         this.kweetID = kweetID;
@@ -57,16 +59,14 @@ public class Kweet {
         return ownerTag;
     }
 
-    public void setOwnerTag(String ownerTag) {
-        this.ownerTag = ownerTag;
-    }
-
     public String getKweet() {
         return kweet;
     }
 
     public void setKweet(String kweet) {
         this.kweet = kweet;
+        this.mentions = getReferencesByTag(kweet, "@");
+        this.trends = getReferencesByTag(kweet, "#");
     }
 
     public Date getPostDate() {

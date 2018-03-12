@@ -1,5 +1,7 @@
 package Domain;
 
+import Exceptions.ProfileException;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,15 +18,15 @@ public class Profile {
     private List<String> following;
     private List<String> followers;
 
-    public Profile(String userTag, String userName, Role role, Image profilePicture, String bio, String location, String websiteURL) {
+    public Profile(String userTag, String userName, Image profilePicture, String bio, String location, String websiteURL) throws ProfileException {
 
-        if (userTag.isEmpty() || userName.isEmpty() || role.equals(null) || bio.length() > 160) {
-            throw new IllegalArgumentException();
+        if (userTag.isEmpty() || userName.isEmpty() || bio.length() > 160) {
+            throw new ProfileException("Please make sure everything is filled in corectly");
         }
 
         this.userTag = userTag;
         this.userName = userName;
-        this.role = role;
+        this.role = new Role("User", false, false, false);
         this.profilePicture = profilePicture;
         this.bio = bio;
         this.location = location;
@@ -63,7 +65,8 @@ public class Profile {
         return role;
     }
 
-    public void setRole(Role role) {
+    public void setRole(Role role) throws ProfileException {
+        if (role.equals(null)) throw new ProfileException("Role is unusable");
         this.role = role;
     }
 
@@ -79,7 +82,8 @@ public class Profile {
         return bio;
     }
 
-    public void setBio(String bio) {
+    public void setBio(String bio) throws ProfileException {
+        if (bio.length() > 160) throw new ProfileException("Your bio is to damm long");
         this.bio = bio;
     }
 
