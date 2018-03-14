@@ -6,6 +6,7 @@ import Domain.Role;
 import Exceptions.ProfileException;
 import iDAO.IProfileDAO;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.Default;
 import java.awt.*;
@@ -21,9 +22,18 @@ public class ProfileDAO implements IProfileDAO {
     private Map<String, Profile> profiles;
     private Map<String, Profile> profilesByUserName;
 
-    public ProfileDAO() {
+    //@PostConstruct
+    public void init() {
         profiles = new HashMap<>();
         profilesByUserName = new HashMap<>();
+
+        try {
+            AddProfile("@JaspervSon", "Jasper van Son", null, "Hi ik ben Jasper", "Tilburg", "www.youtube.com");
+            AddProfile("@StefanoVerhoeven", "Stefano Verhoeven", null, "Hi ik ben Stefano", "Neverland", "www.youtube.com");
+            AddProfile("@Wazzup", "Wazzup", null, "Wolla", "Tilburg", "lemonparty.org");
+        } catch (ProfileException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -100,11 +110,11 @@ public class ProfileDAO implements IProfileDAO {
 
     private void AddProfileToMaps (Profile profile) {
 
-        if (profiles.get(profile.getUserTag()) != null) {
+        if (profiles.get(profile.getUserTag()) == null) {
             profiles.put(profile.getUserTag(), profile);
         }
 
-        if (profilesByUserName.get(profile.getUserName()) != null) {
+        if (profilesByUserName.get(profile.getUserName()) == null) {
             profilesByUserName.put(profile.getUserName(), profile);
         }
     }

@@ -1,11 +1,17 @@
 package Domain;
 
-public class Role {
+import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
+
+@XmlRootElement
+public class Role implements Serializable {
 
     private String role;
     private boolean canDeleteOthers;
     private boolean canGiveRights;
     private boolean canBlockUsers;
+
+    public Role() {}
 
     public Role(String role, boolean canDeleteOthers, boolean canGiveRights, boolean canBlockUsers) {
 

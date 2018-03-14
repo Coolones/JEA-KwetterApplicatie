@@ -2,11 +2,14 @@ package Domain;
 
 import Exceptions.KweetException;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Kweet {
+@XmlRootElement
+public class Kweet implements Serializable {
 
     private int kweetID;
     private String ownerTag;
@@ -15,6 +18,8 @@ public class Kweet {
     private List<String> mentions;
     private List<String> trends;
     private List<String> appreciatedBy;
+
+    public Kweet() {}
 
     public Kweet(int kweetID, String ownerTag, String kweet) throws KweetException {
 

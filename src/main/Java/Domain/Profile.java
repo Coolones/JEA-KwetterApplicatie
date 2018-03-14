@@ -2,11 +2,14 @@ package Domain;
 
 import Exceptions.ProfileException;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.awt.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Profile {
+@XmlRootElement
+public class Profile implements Serializable {
 
     private String userTag;
     private String userName;
@@ -17,6 +20,8 @@ public class Profile {
     private String websiteURL;
     private List<String> following;
     private List<String> followers;
+
+    public Profile() {}
 
     public Profile(String userTag, String userName, Image profilePicture, String bio, String location, String websiteURL) throws ProfileException {
 

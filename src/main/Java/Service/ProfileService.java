@@ -5,6 +5,7 @@ import Domain.Role;
 import Exceptions.ProfileException;
 import iDAO.IProfileDAO;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.awt.*;

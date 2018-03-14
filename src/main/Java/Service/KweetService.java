@@ -6,6 +6,7 @@ import Domain.Profile;
 import Exceptions.KweetException;
 import iDAO.IKweetDAO;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.util.*;
