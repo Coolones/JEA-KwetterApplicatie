@@ -84,11 +84,15 @@ public class KweetDAO implements IKweetDAO {
     @Override
     public void RemoveKweet(Kweet kweet) {
 
-        kweetID.remove(kweet.getKweetID());
-        userKweets.get(kweet.getOwnerTag()).remove(kweet);
+        kweet = kweetID.get(kweet.getKweetID());
 
-        for (String trend : kweet.getTrends()) {
-            trends.get(trend).remove(kweet);
+        if (kweet != null) {
+            kweetID.remove(kweet.getKweetID());
+            userKweets.get(kweet.getOwnerTag()).remove(kweet);
+
+            for (String trend : kweet.getTrends()) {
+                trends.get(trend).remove(kweet);
+            }
         }
     }
 

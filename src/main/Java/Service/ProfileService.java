@@ -36,28 +36,20 @@ public class ProfileService {
         return profileDAO.AddProfile(userTag, userName, profilePicture, bio, location, websiteURL);
     }
 
-    public void setUserName(String userTag, String userName) {
-        profileDAO.setUserName(userTag, userName);
+    public void EditProfile(Profile profile) throws ProfileException {
+        profileDAO.setUserName(profile.getUserTag(), profile.getUserName());
+        profileDAO.setProfilePicture(profile.getUserTag(), profile.getProfilePicture());
+        profileDAO.setBio(profile.getUserTag(), profile.getBio());
+        profileDAO.setLocation(profile.getUserTag(), profile.getLocation());
+        profileDAO.setWebsiteURL(profile.getUserTag(), profile.getWebsiteURL());
+    }
+
+    public boolean IsUniqueUserTag(String userTag) {
+        return profileDAO.IsUniqueUserTag(userTag);
     }
 
     public void setRole(String userTag, Role role) throws ProfileException {
         profileDAO.setRole(userTag, role);
-    }
-
-    public void setProfilePicture(String userTag, Image profilePicture) {
-        profileDAO.setProfilePicture(userTag, profilePicture);
-    }
-
-    public void setBio(String userTag, String bio) throws ProfileException {
-        profileDAO.setBio(userTag, bio);
-    }
-
-    public void setLocation(String userTag, String location) {
-        profileDAO.setLocation(userTag, location);
-    }
-
-    public void setWebsiteURL(String userTag, String websiteURL) {
-        profileDAO.setWebsiteURL(userTag, websiteURL);
     }
 
     public void FollowOther(String userTag, String userTag2) {

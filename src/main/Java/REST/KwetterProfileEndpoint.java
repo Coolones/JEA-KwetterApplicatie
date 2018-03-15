@@ -10,7 +10,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.awt.*;
 import java.util.List;
 
 @Path("/profile")
@@ -51,9 +50,24 @@ public class KwetterProfileEndpoint {
     @Path("/createProfile")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Profile createProfile(Profile profile) throws ProfileException {
-        return profileService.AddProfile(profile.getUserTag(), profile.getUserName(), profile.getProfilePicture(), profile.getBio(), profile.getLocation(), profile.getWebsiteURL());
+    public Response createProfile(Profile profile) {
+        try {
+            return Response.ok(profileService.AddProfile(profile.getUserTag(), profile.getUserName(), profile.getProfilePicture(), profile.getBio(), profile.getLocation(), profile.getWebsiteURL())).build();
+        } catch (ProfileException e) {
+            return Response.notModified(e.getMessage()).build();
+        }
     }
 
-
+    @POST
+    @Path("/editProfile")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response editProfile(Profile profile) {
+        try {
+            profileService.EditProfile(profile);
+            return Response.ok().build();
+        } catch (ProfileException e) {
+            return Response.notModified(e.getMessage()).build();
+        }
+    }
 }
