@@ -6,28 +6,7 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="119cb335-a37a-4cc6-bd5e-46ff9ec532fd" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/Java/REST/KwetterKweetEndpoint.java" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/src/main/Java/DAO/KweetDAO.java" afterPath="$PROJECT_DIR$/src/main/Java/DAO/KweetDAO.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/Java/REST/KwetterProfileEndpoint.java" afterPath="$PROJECT_DIR$/src/main/Java/REST/KwetterProfileEndpoint.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/Java/Service/ProfileService.java" afterPath="$PROJECT_DIR$/src/main/Java/Service/ProfileService.java" />
-      <change beforePath="$PROJECT_DIR$/target/classes/DAO/KweetDAO.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/target/classes/DAO/ProfileDAO.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Domain/Kweet.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Domain/Profile.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Domain/Role.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Exceptions/KweetException.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Exceptions/ProfileException.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/target/classes/REST/KwetterProfileEndpoint$1.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/target/classes/REST/KwetterProfileEndpoint.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/target/classes/REST/REST.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Service/KweetService.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Service/ProfileService.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Service/StartUp.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/target/classes/iDAO/IKweetDAO.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/target/classes/iDAO/IProfileDAO.class" afterPath="" />
-    </list>
+    <list default="true" id="119cb335-a37a-4cc6-bd5e-46ff9ec532fd" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -263,7 +242,7 @@
       </MavenImportingSettings>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="953" />
     <option name="width" value="974" />
     <option name="height" value="1047" />
@@ -610,15 +589,15 @@
       <workItem from="1520848019872" duration="16870000" />
       <workItem from="1520896368446" duration="959000" />
       <workItem from="1520930277782" duration="15193000" />
-      <workItem from="1521142568240" duration="6106000" />
+      <workItem from="1521142568240" duration="6211000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="63384000" />
+    <option name="totallyTimeSpent" value="63489000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
