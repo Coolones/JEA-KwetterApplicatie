@@ -1,6 +1,8 @@
 package DAO;
 
 import Domain.Kweet;
+import Domain.Profile;
+import Domain.Trend;
 import Exceptions.KweetException;
 import iDAO.IKweetDAO;
 
@@ -12,106 +14,83 @@ import java.util.*;
 @Default
 public class KweetDAO implements IKweetDAO {
 
-    private Map<Integer, Kweet> kweetID;
-    private Map<String, List<Kweet>> userKweets;
-    private Map<String, List<Integer>> trends;
+    private List<Kweet> kweets;
+    private List<Trend> trends;
 
     public KweetDAO() {
 
-        kweetID = new HashMap<>();
-        userKweets = new HashMap<>();
-        trends = new HashMap<>();
+        kweets = new ArrayList<>();
+        trends = new ArrayList<>();
     }
 
 
     @Override
     public List<Kweet> getKweets() {
-        return new ArrayList<Kweet>(kweetID.values());
+        return kweets;
     }
 
     @Override
-    public List<Kweet> getKweetsFromUser(String ownerTag) {
-        return userKweets.get(ownerTag);
+    public List<Kweet> getKweetsFromUser(String userTag) {
+
+        List<Kweet> userKweets = new ArrayList<>();
+
+        for (Kweet kweet : kweets) {
+            if (kweet.getOwner().getUserTag() == userTag) {
+                userKweets.add(kweet);
+            }
+        }
+        return userKweets;
     }
 
     @Override
     public List<Kweet> getTenKweetsFromUser(String ownerTag) {
-        List<Kweet> kweets = userKweets.get(ownerTag);
+        List<Kweet> kweets = getKweetsFromUser(ownerTag);
         return kweets.subList(kweets.size() - 11, kweets.size() - 1);
     }
 
     @Override
-    public List<String> getMostPopularTrends() {
+    public List<Trend> getMostPopularTrends() {
 
-        Map<Integer, String> trendCount = new HashMap<>();
+        Map<Integer, Trend> trendCount = new HashMap<>();
 
-        for (Map.Entry<String, List<Integer>> trend : trends.entrySet()) {
-            trendCount.put(trend.getValue().size(), trend.getKey());
+        for (Trend trend : trends) {
+            trendCount.put(trend.getKweets().size(), trend);
         }
 
-        List<String> sortedTrends = new ArrayList(new TreeMap(trendCount).values());
+        List<Trend> sortedTrends = new ArrayList(new TreeMap(trendCount).values());
 
         return sortedTrends.subList(sortedTrends.size() - 11, sortedTrends.size() - 1);
     }
 
     @Override
-    public List<Kweet> getKweetsByTrend(String trend) {
+    public List<Kweet> getKweetsByTrend(Trend trend) {
 
-        List<Kweet> kweets = new ArrayList<>();
-
-        for (int kweet : trends.get(trend)) {
-            kweets.add(kweetID.get(kweet));
-        }
-
-        return kweets;
+        return trend.getKweets();
     }
 
     @Override
-    public Kweet AddKweet(String ownerTag, String kweet) throws KweetException {
+    public Kweet AddKweet(int ID, Profile owner, String message, List<Profile> mentions, List<Trend> trends) throws KweetException {
 
-        Kweet obj = new Kweet(kweetID.size() + 1, ownerTag, kweet);
+        Kweet kweet = new Kweet(kweets.size(), owner, message, mentions, trends);
 
-        AddKweetToMaps(obj);
+        //AddKweetToMaps(obj);
 
-        return obj;
+        return kweet;
     }
 
     @Override
     public Kweet getKweetByID(int ID) {
-        return kweetID.get(ID);
+
+        for (Kweet kweet : kweets) {
+            if (kweet.getID() == ID) return kweet;
+        }
+
+        return null;
     }
 
     @Override
     public void RemoveKweet(Kweet kweet) {
 
-        kweet = kweetID.get(kweet.getKweetID());
-
-        if (kweet != null) {
-            kweetID.remove(kweet.getKweetID());
-            userKweets.get(kweet.getOwnerTag()).remove(kweet);
-
-            for (String trend : kweet.getTrends()) {
-                trends.get(trend).remove(kweet);
-            }
-        }
-    }
-
-    private void AddKweetToMaps (Kweet kweet) {
-
-        if (kweetID.get(kweet.getKweetID()) != null) {
-            kweetID.put(kweet.getKweetID(), kweet);
-        }
-
-        if (userKweets.get(kweet.getOwnerTag()) == null) {
-            userKweets.put(kweet.getOwnerTag(), new ArrayList<Kweet>());
-        }
-        userKweets.get(kweet.getOwnerTag()).add(kweet);
-
-        for (String trend : kweet.getTrends()) {
-            if (trends.get(trend) == null) {
-                trends.put(trend, new ArrayList<Integer>());
-            }
-            trends.get(trend).add(kweet.getKweetID());
-        }
+        kweets.remove(kweet);
     }
 }

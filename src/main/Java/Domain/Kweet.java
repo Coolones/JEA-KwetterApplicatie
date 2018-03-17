@@ -11,28 +11,30 @@ import java.util.List;
 @XmlRootElement
 public class Kweet implements Serializable {
 
-    private int kweetID;
-    private String ownerTag;
+    private int ID;
+    private Profile owner;
     private String kweet;
     private Date postDate;
-    private List<String> mentions;
-    private List<String> trends;
-    private List<String> appreciatedBy;
+    private List<Profile> mentions;
+    private List<Trend> trends;
+    private List<Profile> appreciatedBy;
 
     public Kweet() {}
 
-    public Kweet(int kweetID, String ownerTag, String kweet) throws KweetException {
+    public Kweet(int ID, Profile owner, String kweet, List<Profile> mentions, List<Trend> trends) throws KweetException {
 
-        if (ownerTag.isEmpty() || kweet.isEmpty() || kweet.length() > 140) {
+        if (owner == null || kweet.isEmpty() || kweet.length() > 140) {
             throw new KweetException("Something went wrong");
         }
 
-        this.kweetID = kweetID;
-        this.ownerTag = ownerTag;
+        this.ID = ID;
+        this.owner = owner;
         this.kweet = kweet;
         this.postDate = new Date();
-        this.mentions = getReferencesByTag(kweet, "@");
-        this.trends = getReferencesByTag(kweet, "#");
+        this.mentions = mentions;
+        this.trends = trends;
+        //this.mentions = getReferencesByTag(kweet, "@");
+        //this.trends = getReferencesByTag(kweet, "#");
         this.appreciatedBy = new ArrayList<>();
     }
 
@@ -49,44 +51,38 @@ public class Kweet implements Serializable {
         return references;
     }
 
-    public void AppreciatieKweet(String userTag) {
+    public void AppreciateKweet(Profile profile) {
 
-        if (!appreciatedBy.contains(userTag)) {
-            appreciatedBy.add(userTag);
+        if (!appreciatedBy.contains(profile)) {
+            appreciatedBy.add(profile);
         }
     }
 
-    public int getKweetID() {
-        return kweetID;
+    public int getID() {
+        return ID;
     }
 
-    public String getOwnerTag() {
-        return ownerTag;
+    public Profile getOwner() {
+        return owner;
     }
 
     public String getKweet() {
         return kweet;
     }
 
-    public void setKweet(String kweet) {
-        this.kweet = kweet;
-        this.mentions = getReferencesByTag(kweet, "@");
-        this.trends = getReferencesByTag(kweet, "#");
-    }
-
     public Date getPostDate() {
         return postDate;
     }
 
-    public List<String> getMentions() {
+    public List<Profile> getMentions() {
         return mentions;
     }
 
-    public List<String> getTrends() {
+    public List<Trend> getTrends() {
         return trends;
     }
 
-    public List<String> getAppreciatedBy() {
+    public List<Profile> getAppreciatedBy() {
         return appreciatedBy;
     }
 }

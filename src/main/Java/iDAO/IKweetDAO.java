@@ -1,6 +1,8 @@
 package iDAO;
 
 import Domain.Kweet;
+import Domain.Profile;
+import Domain.Trend;
 import Exceptions.KweetException;
 
 import java.util.List;
@@ -13,11 +15,11 @@ public interface IKweetDAO {
 
     List<Kweet> getTenKweetsFromUser(String ownerTag);
 
-    List<String> getMostPopularTrends();
+    List<Trend> getMostPopularTrends();
 
-    List<Kweet> getKweetsByTrend(String trend);
+    List<Kweet> getKweetsByTrend(Trend trend);
 
-    Kweet AddKweet(String ownerTag, String kweet) throws IllegalArgumentException, KweetException;
+    Kweet AddKweet(int ID, Profile owner, String kweet, List<Profile> mentions, List<Trend> trends) throws IllegalArgumentException, KweetException;
 
     Kweet getKweetByID(int ID);
 

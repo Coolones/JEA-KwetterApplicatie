@@ -19,103 +19,78 @@ import java.util.Map;
 @Default
 public class ProfileDAO implements IProfileDAO {
 
-    private Map<String, Profile> profiles;
-    private Map<String, Profile> profilesByUserName;
+    private List<Profile> profiles;
 
     //@PostConstruct
     public void init() {
-        profiles = new HashMap<>();
-        profilesByUserName = new HashMap<>();
+        profiles = new ArrayList<>();
 
-        try {
+        /*try {
             AddProfile("@JaspervSon", "Jasper van Son", null, "Hi ik ben Jasper", "Tilburg", "www.youtube.com");
             AddProfile("@StefanoVerhoeven", "Stefano Verhoeven", null, "Hi ik ben Stefano", "Neverland", "www.youtube.com");
             AddProfile("@Wazzup", "Wazzup", null, "Wolla", "Tilburg", "lemonparty.org");
         } catch (ProfileException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     @Override
     public List<Profile> getProfiles() {
-        return new ArrayList(profiles.values());
+        return profiles;
     }
 
     @Override
     public Profile getProfile(String userTag) {
-        return profiles.get(userTag);
+
+        for (Profile profile : profiles) {
+            if (profile.getUserTag().equals(userTag)) return profile;
+        }
+
+        return null;
     }
 
     @Override
     public Profile getProfileByUserName(String userName) {
-        return profilesByUserName.get(userName);
+
+        for (Profile profile : profiles) {
+            if (profile.getUserTag().equals(userName)) return profile;
+        }
+
+        return null;
     }
 
     @Override
-    public Profile AddProfile(String userTag, String userName, Image profilePicture, String bio, String location, String websiteURL) throws ProfileException {
+    public Profile AddProfile(Profile profile) throws ProfileException {
 
-        if (!IsUniqueUserTag(userTag)) throw new ProfileException("UserTag is already in use");
+        if (!IsUniqueUserTag(profile.getUserTag())) throw new ProfileException("UserTag is already in use");
 
-        Profile profile = new Profile(userTag, userName, profilePicture, bio, location, websiteURL);
-        AddProfileToMaps(profile);
+        profile = new Profile(profile);
+        profiles.add(profile);
 
         return profile;
     }
 
     @Override
+    public Profile EditProfile(Profile profile) throws ProfileException {
+
+        profile = getProfile(profile.getUserTag()).EditProfile(profile);
+
+        return profile;
+    }
+
+
+    @Override
     public boolean IsUniqueUserTag(String userTag) {
-        if (profiles.containsKey(userTag)) return false;
-        else return true;
-    }
-
-    @Override
-    public void setUserName(String userTag, String userName) {
-        getProfile(userTag).setUserName(userName);
-    }
-
-    @Override
-    public void setRole(String userTag, Role role) throws ProfileException {
-        getProfile(userTag).setRole(role);
-    }
-
-    @Override
-    public void setProfilePicture(String userTag, Image profilePicture) {
-        getProfile(userTag).setProfilePicture(profilePicture);
-    }
-
-    @Override
-    public void setBio(String userTag, String bio) throws ProfileException {
-        getProfile(userTag).setBio(bio);
-    }
-
-    @Override
-    public void setLocation(String userTag, String location) {
-        getProfile(userTag).setLocation(location);
-    }
-
-    @Override
-    public void setWebsiteURL(String userTag, String websiteURL) {
-        getProfile(userTag).setWebsiteURL(websiteURL);
-    }
-
-    @Override
-    public void FollowOther(String userTag, String userTag2) {
-        getProfile(userTag).FollowOther(userTag2);
-    }
-
-    @Override
-    public void FollowMe(String userTag, String userTag2) {
-        getProfile(userTag).FollowMe(userTag2);
-    }
-
-    private void AddProfileToMaps (Profile profile) {
-
-        if (profiles.get(profile.getUserTag()) == null) {
-            profiles.put(profile.getUserTag(), profile);
+        for (Profile profile : profiles) {
+            if (profile.getUserTag().equals(userTag)) return false;
         }
 
-        if (profilesByUserName.get(profile.getUserName()) == null) {
-            profilesByUserName.put(profile.getUserName(), profile);
-        }
+        return true;
+    }
+
+    @Override
+    public void FollowProfile(Profile myProfile, Profile otherProfile) {
+        myProfile.FollowOther(otherProfile);
+        otherProfile.FollowMe(myProfile);
     }
 }

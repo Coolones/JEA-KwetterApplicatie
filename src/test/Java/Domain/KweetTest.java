@@ -16,7 +16,7 @@ public class KweetTest {
     @Before
     public void setUp() throws Exception {
         kweet = new Kweet(0, "@Jasper", message);
-        kweet.AppreciatieKweet("@Stefano");
+        kweet.AppreciateKweet("@Stefano");
     }
 
     @After
@@ -26,7 +26,7 @@ public class KweetTest {
 
     @Test
     public void appreciatieKweet() {
-        kweet.AppreciatieKweet("@Stefano");
+        kweet.AppreciateKweet("@Stefano");
 
         assertEquals(1, kweet.getAppreciatedBy().size());
     }

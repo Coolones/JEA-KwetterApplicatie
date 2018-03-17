@@ -31,24 +31,20 @@ public class ProfileService {
         return profileDAO.getProfileByUserName(userName);
     }
 
-    public Profile AddProfile(String userTag, String userName, Image profilePicture, String bio, String location, String websiteURL) throws ProfileException {
+    public Profile AddProfile(Profile profile) throws ProfileException {
 
-        return profileDAO.AddProfile(userTag, userName, profilePicture, bio, location, websiteURL);
+        return profileDAO.AddProfile(profile);
     }
 
     public void EditProfile(Profile profile) throws ProfileException {
-        profileDAO.setUserName(profile.getUserTag(), profile.getUserName());
-        profileDAO.setProfilePicture(profile.getUserTag(), profile.getProfilePicture());
-        profileDAO.setBio(profile.getUserTag(), profile.getBio());
-        profileDAO.setLocation(profile.getUserTag(), profile.getLocation());
-        profileDAO.setWebsiteURL(profile.getUserTag(), profile.getWebsiteURL());
+        profileDAO.EditProfile(profile);
     }
 
     public boolean IsUniqueUserTag(String userTag) {
         return profileDAO.IsUniqueUserTag(userTag);
     }
 
-    public void setRole(String userTag, Role role) throws ProfileException {
+    /*public void setRole(String userTag, Role role) throws ProfileException {
         profileDAO.setRole(userTag, role);
     }
 
@@ -58,5 +54,5 @@ public class ProfileService {
 
     public void FollowMe(String userTag, String userTag2) {
         profileDAO.FollowMe(userTag, userTag2);
-    }
+    }*/
 }

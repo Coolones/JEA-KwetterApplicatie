@@ -6,6 +6,7 @@ import java.io.Serializable;
 @XmlRootElement
 public class Role implements Serializable {
 
+    private int ID;
     private String role;
     private boolean canDeleteOthers;
     private boolean canGiveRights;
@@ -13,9 +14,9 @@ public class Role implements Serializable {
 
     public Role() {}
 
-    public Role(String role, boolean canDeleteOthers, boolean canGiveRights, boolean canBlockUsers) {
+    public Role(int ID, String role, boolean canDeleteOthers, boolean canGiveRights, boolean canBlockUsers) {
 
-        if (role.isEmpty()) {
+        if (ID < 0 || role.isEmpty()) {
             throw new IllegalArgumentException();
         }
 

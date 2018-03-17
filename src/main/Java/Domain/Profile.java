@@ -11,6 +11,7 @@ import java.util.List;
 @XmlRootElement
 public class Profile implements Serializable {
 
+    private int ID;
     private String userTag;
     private String userName;
     private Role role;
@@ -18,40 +19,81 @@ public class Profile implements Serializable {
     private String bio;
     private String location;
     private String websiteURL;
-    private List<String> following;
-    private List<String> followers;
+    private List<Kweet> kweets;
+    private List<Profile> following;
+    private List<Profile> followers;
 
     public Profile() {}
 
-    public Profile(String userTag, String userName, Image profilePicture, String bio, String location, String websiteURL) throws ProfileException {
+    public Profile(Profile profile) throws ProfileException {
 
-        if (userTag.isEmpty() || userName.isEmpty() || bio.length() > 160) {
+        if (profile.getID() < 0 || profile.getRole() == null || profile.getUserTag().isEmpty() || profile.getUserName().isEmpty() || profile.getBio().length() > 160) {
             throw new ProfileException("Please make sure everything is filled in corectly");
         }
 
-        this.userTag = userTag;
-        this.userName = userName;
-        this.role = new Role("User", false, false, false);
-        this.profilePicture = profilePicture;
-        this.bio = bio;
-        this.location = location;
-        this.websiteURL = websiteURL;
+        this.ID = profile.getID();
+        this.userTag = profile.getUserTag();
+        this.userName = profile.getUserName();
+        this.role = profile.getRole();
+        this.profilePicture = profile.getProfilePicture();
+        this.bio = profile.getBio();
+        this.location = profile.getLocation();
+        this.websiteURL = profile.getWebsiteURL();
+        this.kweets = new ArrayList<>();
         this.following = new ArrayList<>();
         this.followers = new ArrayList<>();
     }
 
-    public void FollowOther(String userTag) {
+    public Profile(int ID, String userTag, String userName, Role role, Image profilePicture, String bio, String location, String websiteURL) throws ProfileException {
 
-        if (!following.contains(userTag)) {
-            following.add(userTag);
+        if (ID < 0 || role == null || userTag.isEmpty() || userName.isEmpty() || bio.length() > 160) {
+            throw new ProfileException("Please make sure everything is filled in corectly");
+        }
+
+        this.ID = ID;
+        this.userTag = userTag;
+        this.userName = userName;
+        this.role = role;
+        this.profilePicture = profilePicture;
+        this.bio = bio;
+        this.location = location;
+        this.websiteURL = websiteURL;
+        this.kweets = new ArrayList<>();
+        this.following = new ArrayList<>();
+        this.followers = new ArrayList<>();
+    }
+
+    public void AddKweet(Kweet kweet) {
+        kweets.add(kweet);
+    }
+
+    public void FollowOther(Profile profile) {
+
+        if (!following.contains(profile)) {
+            following.add(profile);
         }
     }
 
-    public void FollowMe(String userTag) {
+    public void FollowMe(Profile profile) {
 
-        if (!followers.contains(userTag)) {
-            followers.add(userTag);
+        if (!followers.contains(profile)) {
+            followers.add(profile);
         }
+    }
+
+    public Profile EditProfile(Profile profile) throws ProfileException {
+
+        setUserName(profile.getUserName());
+        setProfilePicture(profile.getProfilePicture());
+        setBio(profile.getBio());
+        setLocation(profile.getLocation());
+        setWebsiteURL(profile.getWebsiteURL());
+
+        return this;
+    }
+
+    public int getID() {
+        return ID;
     }
 
     public String getUserTag() {
@@ -62,7 +104,7 @@ public class Profile implements Serializable {
         return userName;
     }
 
-    public void setUserName(String userName) {
+    private void setUserName(String userName) {
         this.userName = userName;
     }
 
@@ -71,7 +113,7 @@ public class Profile implements Serializable {
     }
 
     public void setRole(Role role) throws ProfileException {
-        if (role.equals(null)) throw new ProfileException("Role is unusable");
+        if (role.equals(null)) throw new ProfileException("Role is empty");
         this.role = role;
     }
 
@@ -79,7 +121,7 @@ public class Profile implements Serializable {
         return profilePicture;
     }
 
-    public void setProfilePicture(Image profilePicture) {
+    private void setProfilePicture(Image profilePicture) {
         this.profilePicture = profilePicture;
     }
 
@@ -87,7 +129,7 @@ public class Profile implements Serializable {
         return bio;
     }
 
-    public void setBio(String bio) throws ProfileException {
+    private void setBio(String bio) throws ProfileException {
         if (bio.length() > 160) throw new ProfileException("Your bio is to damm long");
         this.bio = bio;
     }
@@ -96,7 +138,7 @@ public class Profile implements Serializable {
         return location;
     }
 
-    public void setLocation(String location) {
+    private void setLocation(String location) {
         this.location = location;
     }
 
@@ -104,15 +146,19 @@ public class Profile implements Serializable {
         return websiteURL;
     }
 
-    public void setWebsiteURL(String websiteURL) {
+    private void setWebsiteURL(String websiteURL) {
         this.websiteURL = websiteURL;
     }
 
-    public List<String> getFollowing() {
+    public List<Kweet> getKweets() {
+        return kweets;
+    }
+
+    public List<Profile> getFollowing() {
         return following;
     }
 
-    public List<String> getFollowers() {
+    public List<Profile> getFollowers() {
         return followers;
     }
 }

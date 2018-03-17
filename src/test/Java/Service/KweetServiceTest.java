@@ -21,7 +21,7 @@ public class KweetServiceTest {
     @Before
     public void setUp() throws Exception {
         kweetService.AddKweet("@Jasper", message);
-        kweet.AppreciatieKweet("@Stefano");
+        kweet.AppreciateKweet("@Stefano");
     }
 
     @After
