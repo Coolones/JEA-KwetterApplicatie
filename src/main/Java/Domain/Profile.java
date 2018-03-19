@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlTransient;
 import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -13,6 +14,8 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Profile implements Serializable {
 
+    @XmlTransient
+    @JsonIgnore
     private int ID;
     private String userTag;
     private String userName;
@@ -22,10 +25,13 @@ public class Profile implements Serializable {
     private String location;
     private String websiteURL;
 
+    @XmlTransient
     @JsonIgnore
     private List<Kweet> kweets;
+    @XmlTransient
     @JsonIgnore
     private List<Profile> following;
+    @XmlTransient
     @JsonIgnore
     private List<Profile> followers;
 
@@ -136,9 +142,9 @@ public class Profile implements Serializable {
         this.websiteURL = websiteURL;
     }
 
-    /*public List<Kweet> getKweets() {
+    public List<Kweet> getKweets() {
         return kweets;
-    }*/
+    }
 
     public List<Profile> getFollowing() {
         return following;
