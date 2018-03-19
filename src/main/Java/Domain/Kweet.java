@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,10 +19,13 @@ public class Kweet implements Serializable {
     private String kweet;
     private Date postDate;
 
+    @XmlTransient
     @JsonIgnore
     private List<Profile> mentions;
+    @XmlTransient
     @JsonIgnore
     private List<Trend> trends;
+    @XmlTransient
     @JsonIgnore
     private List<Profile> appreciatedBy;
 
