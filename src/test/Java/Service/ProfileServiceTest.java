@@ -16,10 +16,14 @@ public class ProfileServiceTest {
     ProfileService profileService;
 
     Profile profile;
+    Profile stefano;
+    Profile random;
 
     @Before
     public void setUp() throws Exception {
-        profile = profileService.AddProfile("@Jasper", "Jasper van Son", null, "I don't want to put anything here", "Tilburg", "");
+        profile = profileService.AddProfile(new Profile(0, "@JaspervSon", "Jasper van Son", null, "Hi ik ben Jasper", "Tilburg", "www.youtube.com"));
+        stefano = profileService.AddProfile(new Profile(1,"@StefanoVerhoeven", "Stefano Verhoeven", null, "Hi ik ben Stefano", "Neverland", "www.youtube.com"));
+        random = profileService.AddProfile(new Profile(2,"@Wazzup", "Wazzup", null, "Wolla", "Tilburg", "lemonparty.org"));
     }
 
     @After
@@ -27,6 +31,18 @@ public class ProfileServiceTest {
     }
 
     @Test
+    public void followProfile() {
+        profileService.FollowProfile(profile.getUserTag(), stefano.getUserTag());
+
+        assertEquals(1, profile.getFollowing().size());
+
+        profileService.FollowProfile(stefano.getUserTag(), profile.getUserTag());
+        profileService.FollowProfile(random.getUserTag(), profile.getUserTag());
+
+        assertEquals(2, profile.getFollowers().size());
+    }
+
+    /*@Test
     public void followOther() {
         profileService.FollowOther(profile.getUserTag(), "@Stefano");
 
@@ -39,16 +55,23 @@ public class ProfileServiceTest {
         profileService.FollowMe(profile.getUserTag(), "@FrankC");
 
         assertEquals(2, profile.getFollowers().size());
-    }
+    }*/
 
-    @Test
+    /*@Test
     public void setUserName() {
         profileService.setUserName(profile.getUserTag(), "JaspervSon");
 
         assertEquals("JaspervSon", profile.getUserName());
-    }
+    }*/
 
     @Test(expected= ProfileException.class)
+    public void EditProfile() throws ProfileException {
+        Profile temp = new Profile(0, "@JaspervSon", "Jasper van Son Joh", null, "Hi ik ben Jasper Joh", "Tilburg Joh", "www.youtube.com/Joh");
+
+        profile.EditProfile(temp);
+    }
+
+    /*@Test(expected= ProfileException.class)
     public void setBio() throws ProfileException {
             String randomBio = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Diam donec adipiscing tristique risus nec feugiat in fermentum. Id eu nisl nunc mi ipsum faucibus vitae aliquet. Viverra orci sagittis eu volutpat. Facilisis gravida neque convallis a cras semper auctor neque vitae. Et malesuada fames ac turpis egestas maecenas pharetra convallis posuere. Viverra accumsan in nisl nisi scelerisque eu ultrices. Scelerisque mauris pellentesque pulvinar pellentesque habitant morbi tristique senectus et. Condimentum mattis pellentesque id nibh tortor id aliquet. Vulputate mi sit amet mauris commodo quis imperdiet massa. Laoreet id donec ultrices tincidunt arcu non sodales neque. Ultricies tristique nulla aliquet enim tortor at auctor. Cursus mattis molestie a iaculis at erat pellentesque adipiscing. Sem integer vitae justo eget magna fermentum iaculis eu. Integer malesuada nunc vel risus commodo. Nullam vehicula ipsum a arcu cursus vitae. Nunc eget lorem dolor sed viverra ipsum nunc. Sit amet consectetur adipiscing elit duis tristique sollicitudin. Vitae elementum curabitur vitae nunc sed velit dignissim sodales. Penatibus et magnis dis parturient montes nascetur ridiculus mus.\n" +
                     "\n" +
@@ -61,5 +84,5 @@ public class ProfileServiceTest {
                     "Vivamus at augue eget arcu dictum varius duis at. Sem et tortor consequat id porta nibh venenatis cras. Amet tellus cras adipiscing enim eu turpis egestas pretium aenean. Ut tristique et egestas quis ipsum suspendisse ultrices gravida dictum. Enim nunc faucibus a pellentesque sit amet porttitor eget dolor. Faucibus pulvinar elementum integer enim neque volutpat ac. Netus et malesuada fames ac turpis egestas. Purus sit amet luctus venenatis lectus. Consectetur adipiscing elit pellentesque habitant morbi tristique senectus et. Blandit libero volutpat sed cras ornare arcu dui vivamus.";
 
             profileService.setBio(profile.getUserTag(), randomBio);
-    }
+    }*/
 }

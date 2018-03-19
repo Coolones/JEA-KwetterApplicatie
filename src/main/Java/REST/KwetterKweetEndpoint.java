@@ -2,6 +2,7 @@ package REST;
 
 import Domain.Kweet;
 import Domain.Profile;
+import Domain.Trend;
 import Exceptions.KweetException;
 import Service.KweetService;
 import Service.ProfileService;
@@ -19,10 +20,10 @@ import java.util.List;
 public class KwetterKweetEndpoint {
 
     @Inject
-    ProfileService profileService;
+    KweetService kweetService;
 
     @Inject
-    KweetService kweetService;
+    ProfileService profileService;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -60,7 +61,7 @@ public class KwetterKweetEndpoint {
     @Path("/mostPopularTrends")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getMostPopularTrends() {
-        GenericEntity<List<String>> trends = new GenericEntity<List<String>>(kweetService.getMostPopularTrends()) {};
+        GenericEntity<List<Trend>> trends = new GenericEntity<List<Trend>>(kweetService.getMostPopularTrends()) {};
 
         return Response.ok(trends).build();
     }
@@ -77,7 +78,7 @@ public class KwetterKweetEndpoint {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response AddKweet(Kweet kweet) {
         try {
-            return Response.ok(kweetService.AddKweet(kweet.getOwnerTag(), kweet.getKweet())).build();
+            return Response.ok(kweetService.AddKweet(kweet.getOwner().getUserTag(), kweet.getKweet())).build();
         } catch (KweetException e) {
             return Response.notModified(e.getMessage()).build();
         }

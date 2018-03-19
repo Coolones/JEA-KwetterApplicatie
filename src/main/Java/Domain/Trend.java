@@ -1,13 +1,19 @@
 package Domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Trend implements Serializable {
 
     private int ID;
     private String trend;
+    @JsonIgnore
     private List<Kweet> kweets;
 
     public Trend() {}

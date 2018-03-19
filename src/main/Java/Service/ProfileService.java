@@ -44,15 +44,15 @@ public class ProfileService {
         return profileDAO.IsUniqueUserTag(userTag);
     }
 
-    /*public void setRole(String userTag, Role role) throws ProfileException {
-        profileDAO.setRole(userTag, role);
+    public void setRole(String userTag, Role role) throws ProfileException {
+        if (!IsUniqueUserTag(userTag)) {
+            profileDAO.setRole(getProfile(userTag), role);
+        }
     }
 
-    public void FollowOther(String userTag, String userTag2) {
-        profileDAO.FollowOther(userTag, userTag2);
+    public void FollowProfile(String myUserTag, String otherUserTag) {
+        if (!IsUniqueUserTag(myUserTag) && !IsUniqueUserTag(otherUserTag)) {
+            profileDAO.FollowProfile(getProfile(myUserTag), getProfile(otherUserTag));
+        }
     }
-
-    public void FollowMe(String userTag, String userTag2) {
-        profileDAO.FollowMe(userTag, userTag2);
-    }*/
 }

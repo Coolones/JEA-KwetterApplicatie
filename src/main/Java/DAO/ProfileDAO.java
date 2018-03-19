@@ -21,17 +21,18 @@ public class ProfileDAO implements IProfileDAO {
 
     private List<Profile> profiles;
 
-    //@PostConstruct
+    @PostConstruct
     public void init() {
+        System.out.print("Test");
         profiles = new ArrayList<>();
 
-        /*try {
-            AddProfile("@JaspervSon", "Jasper van Son", null, "Hi ik ben Jasper", "Tilburg", "www.youtube.com");
-            AddProfile("@StefanoVerhoeven", "Stefano Verhoeven", null, "Hi ik ben Stefano", "Neverland", "www.youtube.com");
-            AddProfile("@Wazzup", "Wazzup", null, "Wolla", "Tilburg", "lemonparty.org");
+        try {
+            profiles.add(new Profile(0, "@JaspervSon", "Jasper van Son", null, "Hi ik ben Jasper", "Tilburg", "www.youtube.com"));
+            profiles.add(new Profile(1,"@StefanoVerhoeve", "Stefano Verhoeve", null, "Hi ik ben Stefano", "Neverland", "www.youtube.com"));
+            profiles.add(new Profile(2,"@Wazzup", "Wazzup", null, "Wolla", "Tilburg", "lemonparty.org"));
         } catch (ProfileException e) {
             e.printStackTrace();
-        }*/
+        }
     }
 
     @Override
@@ -64,7 +65,7 @@ public class ProfileDAO implements IProfileDAO {
 
         if (!IsUniqueUserTag(profile.getUserTag())) throw new ProfileException("UserTag is already in use");
 
-        profile = new Profile(profile);
+        profile = new Profile(profiles.size(), profile.getUserTag(), profile.getUserName(), profile.getProfilePicture(), profile.getBio(), profile.getLocation(), profile.getWebsiteURL());
         profiles.add(profile);
 
         return profile;
@@ -92,5 +93,10 @@ public class ProfileDAO implements IProfileDAO {
     public void FollowProfile(Profile myProfile, Profile otherProfile) {
         myProfile.FollowOther(otherProfile);
         otherProfile.FollowMe(myProfile);
+    }
+
+    @Override
+    public void setRole(Profile profile, Role role) throws ProfileException {
+        profile.setRole(role);
     }
 }

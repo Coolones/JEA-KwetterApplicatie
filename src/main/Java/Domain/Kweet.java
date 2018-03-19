@@ -1,22 +1,28 @@
 package Domain;
 
 import Exceptions.KweetException;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Kweet implements Serializable {
 
     private int ID;
     private Profile owner;
     private String kweet;
     private Date postDate;
+
+    @JsonIgnore
     private List<Profile> mentions;
+    @JsonIgnore
     private List<Trend> trends;
+    @JsonIgnore
     private List<Profile> appreciatedBy;
 
     public Kweet() {}
@@ -33,22 +39,7 @@ public class Kweet implements Serializable {
         this.postDate = new Date();
         this.mentions = mentions;
         this.trends = trends;
-        //this.mentions = getReferencesByTag(kweet, "@");
-        //this.trends = getReferencesByTag(kweet, "#");
         this.appreciatedBy = new ArrayList<>();
-    }
-
-    private List<String> getReferencesByTag(String kweet, String tag) {
-
-        List<String> references = new ArrayList<>();
-
-        for (String word : kweet.split(" ")) {
-            if (word.startsWith(tag) && !references.contains(word)) {
-                references.add(word);
-            }
-        }
-
-        return references;
     }
 
     public void AppreciateKweet(Profile profile) {

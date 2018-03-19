@@ -1,6 +1,7 @@
 package Service;
 
 import Domain.Kweet;
+import Domain.Profile;
 import Exceptions.KweetException;
 import org.junit.After;
 import org.junit.Before;
@@ -12,16 +13,27 @@ import static org.junit.Assert.*;
 
 public class KweetServiceTest {
 
+    Profile profile;
+    Profile stefano;
+    Profile random;
+
     @Inject
     KweetService kweetService;
+
+    @Inject
+    ProfileService profileService;
 
     Kweet kweet;
     String message = "Hallo @FrankC @Michel @LijpeMofo @HelloWorld vandaag zijn we bijeengekomen om #SamenZijn #JEAhalen #SchoolIsCool en er een leuke dag van te maken.";
 
     @Before
     public void setUp() throws Exception {
-        kweetService.AddKweet("@Jasper", message);
-        kweet.AppreciateKweet("@Stefano");
+
+        profile = profileService.AddProfile(new Profile(0, "@JaspervSon", "Jasper van Son", null, "Hi ik ben Jasper", "Tilburg", "www.youtube.com"));
+        stefano = profileService.AddProfile(new Profile(1,"@StefanoVerhoeven", "Stefano Verhoeven", null, "Hi ik ben Stefano", "Neverland", "www.youtube.com"));
+        random = profileService.AddProfile(new Profile(2,"@Wazzup", "Wazzup", null, "Wolla", "Tilburg", "lemonparty.org"));
+        kweet = kweetService.AddKweet("@JaspervSon", message);
+        kweet.AppreciateKweet(stefano);
     }
 
     @After
@@ -40,7 +52,7 @@ public class KweetServiceTest {
 
     @Test
     public void getTenKweetsFromUser() {
-        assertEquals(1, kweetService.getKweetsFromUser(kweet.getOwnerTag()));
+        assertEquals(1, kweetService.getKweetsFromUser(profile.getUserTag()));
     }
 
     @Test
@@ -62,12 +74,12 @@ public class KweetServiceTest {
 
     @Test
     public void getKweetByID() {
-        assertEquals(message, kweetService.getKweetByID(kweet.getKweetID()).getKweet());
+        assertEquals(message, kweetService.getKweetByID(kweet.getID()).getKweet());
     }
 
     @Test
     public void removeKweet() {
         kweetService.RemoveKweet(kweet);
-        assertEquals(0, kweetService.getKweetsFromUser("@Jasper"));
+        assertEquals(0, kweetService.getKweetsFromUser("@JaspervSon"));
     }
 }

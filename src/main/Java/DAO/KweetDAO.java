@@ -49,6 +49,20 @@ public class KweetDAO implements IKweetDAO {
     }
 
     @Override
+    public List<Trend> getTrends() {
+        return trends;
+    }
+
+    @Override
+    public Trend getTrendByTag(String trendTag) {
+        for (Trend trend : trends) {
+            if (trend.getTrend().equals(trendTag)) return trend;
+        }
+
+        return null;
+    }
+
+    @Override
     public List<Trend> getMostPopularTrends() {
 
         Map<Integer, Trend> trendCount = new HashMap<>();
@@ -69,13 +83,22 @@ public class KweetDAO implements IKweetDAO {
     }
 
     @Override
-    public Kweet AddKweet(int ID, Profile owner, String message, List<Profile> mentions, List<Trend> trends) throws KweetException {
+    public Kweet AddKweet(Profile owner, String message, List<Profile> mentions, List<Trend> trends) throws KweetException {
 
         Kweet kweet = new Kweet(kweets.size(), owner, message, mentions, trends);
 
-        //AddKweetToMaps(obj);
+        kweets.add(kweet);
 
         return kweet;
+    }
+
+    @Override
+    public Trend AddTrend(String name) {
+        Trend trend = new Trend(trends.size(), name);
+
+        trends.add(trend);
+
+        return trend;
     }
 
     @Override

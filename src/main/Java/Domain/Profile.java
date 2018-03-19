@@ -1,14 +1,16 @@
 package Domain;
 
 import Exceptions.ProfileException;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Profile implements Serializable {
 
     private int ID;
@@ -19,41 +21,26 @@ public class Profile implements Serializable {
     private String bio;
     private String location;
     private String websiteURL;
+
+    @JsonIgnore
     private List<Kweet> kweets;
+    @JsonIgnore
     private List<Profile> following;
+    @JsonIgnore
     private List<Profile> followers;
 
     public Profile() {}
 
-    public Profile(Profile profile) throws ProfileException {
+    public Profile(int ID, String userTag, String userName, Image profilePicture, String bio, String location, String websiteURL) throws ProfileException {
 
-        if (profile.getID() < 0 || profile.getRole() == null || profile.getUserTag().isEmpty() || profile.getUserName().isEmpty() || profile.getBio().length() > 160) {
-            throw new ProfileException("Please make sure everything is filled in corectly");
-        }
-
-        this.ID = profile.getID();
-        this.userTag = profile.getUserTag();
-        this.userName = profile.getUserName();
-        this.role = profile.getRole();
-        this.profilePicture = profile.getProfilePicture();
-        this.bio = profile.getBio();
-        this.location = profile.getLocation();
-        this.websiteURL = profile.getWebsiteURL();
-        this.kweets = new ArrayList<>();
-        this.following = new ArrayList<>();
-        this.followers = new ArrayList<>();
-    }
-
-    public Profile(int ID, String userTag, String userName, Role role, Image profilePicture, String bio, String location, String websiteURL) throws ProfileException {
-
-        if (ID < 0 || role == null || userTag.isEmpty() || userName.isEmpty() || bio.length() > 160) {
+        if (ID < 0 || userTag.isEmpty() || userName.isEmpty() || bio.length() > 160) {
             throw new ProfileException("Please make sure everything is filled in corectly");
         }
 
         this.ID = ID;
         this.userTag = userTag;
         this.userName = userName;
-        this.role = role;
+        this.role = Role.PROFILE;
         this.profilePicture = profilePicture;
         this.bio = bio;
         this.location = location;
@@ -112,8 +99,7 @@ public class Profile implements Serializable {
         return role;
     }
 
-    public void setRole(Role role) throws ProfileException {
-        if (role.equals(null)) throw new ProfileException("Role is empty");
+    public void setRole(Role role) {
         this.role = role;
     }
 
@@ -150,9 +136,9 @@ public class Profile implements Serializable {
         this.websiteURL = websiteURL;
     }
 
-    public List<Kweet> getKweets() {
+    /*public List<Kweet> getKweets() {
         return kweets;
-    }
+    }*/
 
     public List<Profile> getFollowing() {
         return following;

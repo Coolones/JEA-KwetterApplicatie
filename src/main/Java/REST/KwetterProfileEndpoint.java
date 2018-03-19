@@ -52,7 +52,7 @@ public class KwetterProfileEndpoint {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createProfile(Profile profile) {
         try {
-            return Response.ok(profileService.AddProfile(profile.getUserTag(), profile.getUserName(), profile.getProfilePicture(), profile.getBio(), profile.getLocation(), profile.getWebsiteURL())).build();
+            return Response.ok(profileService.AddProfile(profile)).build();
         } catch (ProfileException e) {
             return Response.notModified(e.getMessage()).build();
         }

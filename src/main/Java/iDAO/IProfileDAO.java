@@ -23,4 +23,6 @@ public interface IProfileDAO {
     boolean IsUniqueUserTag(String userTag);
 
     void FollowProfile(Profile myProfile, Profile otherProfile);
+
+    void setRole(Profile profile, Role role) throws ProfileException;
 }

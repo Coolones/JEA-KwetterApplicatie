@@ -15,11 +15,17 @@ public interface IKweetDAO {
 
     List<Kweet> getTenKweetsFromUser(String ownerTag);
 
+    List<Trend> getTrends();
+
+    Trend getTrendByTag(String trendTag);
+
     List<Trend> getMostPopularTrends();
 
     List<Kweet> getKweetsByTrend(Trend trend);
 
-    Kweet AddKweet(int ID, Profile owner, String kweet, List<Profile> mentions, List<Trend> trends) throws IllegalArgumentException, KweetException;
+    Kweet AddKweet(Profile owner, String kweet, List<Profile> mentions, List<Trend> trends) throws IllegalArgumentException, KweetException;
+
+    Trend AddTrend(String name);
 
     Kweet getKweetByID(int ID);
 

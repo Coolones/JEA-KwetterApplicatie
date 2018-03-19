@@ -11,10 +11,14 @@ import static org.junit.Assert.fail;
 public class ProfileTest {
 
     Profile profile;
+    Profile stefano;
+    Profile random;
 
     @Before
     public void setUp() throws Exception {
-        profile = new Profile("@Jasper", "Jasper van Son", null, "I don't want to put anything here", "Tilburg", "");
+        profile = new Profile(0, "@JaspervSon", "Jasper van Son", null, "Hi ik ben Jasper", "Tilburg", "www.youtube.com");
+        stefano = new Profile(1,"@StefanoVerhoeven", "Stefano Verhoeven", null, "Hi ik ben Stefano", "Neverland", "www.youtube.com");
+        random = new Profile(2,"@Wazzup", "Wazzup", null, "Wolla", "Tilburg", "lemonparty.org");
     }
 
     @After
@@ -23,20 +27,27 @@ public class ProfileTest {
 
     @Test
     public void followOther() {
-        profile.FollowOther("@Stefano");
+        profile.FollowOther(stefano);
 
         assertEquals(1, profile.getFollowing().size());
     }
 
     @Test
     public void followMe() {
-        profile.FollowMe("@Stefano");
-        profile.FollowMe("@FrankC");
+        profile.FollowMe(stefano);
+        profile.FollowMe(random);
 
         assertEquals(2, profile.getFollowers().size());
     }
 
-    @Test
+    @Test(expected= ProfileException.class)
+    public void EditProfile() throws ProfileException {
+        Profile temp = new Profile(0, "@JaspervSon", "Jasper van Son Joh", null, "Hi ik ben Jasper Joh", "Tilburg Joh", "www.youtube.com/Joh");
+
+        profile.EditProfile(temp);
+    }
+
+    /*@Test
     public void setUserName() {
         profile.setUserName("JaspervSon");
 
@@ -60,5 +71,5 @@ public class ProfileTest {
         } catch(IllegalArgumentException ex) {
             fail("Bio is to damm long");
         }
-    }
+    }*/
 }
