@@ -1,6 +1,7 @@
 package Service;
 
 import Domain.Profile;
+import Domain.Role;
 import Exceptions.ProfileException;
 
 import javax.annotation.PostConstruct;
@@ -23,9 +24,9 @@ public class StartUp {
     @PostConstruct
     private void initData() {
         try {
-            profileService.AddProfile(new Profile(0, "@JaspervSon", "Jasper van Son", null, "Hi ik ben Jasper", "Tilburg", "www.youtube.com"));
-            profileService.AddProfile(new Profile(1,"@StefanoVerhoeve", "Stefano Verhoeve", null, "Hi ik ben Stefano", "Neverland", "www.youtube.com"));
-            profileService.AddProfile(new Profile(2,"@Wazzup", "Wazzup", null, "Wolla", "Tilburg", "lemonparty.org"));
+            profileService.AddProfile(new Profile(0, "noreply@JaspervSon.nl", "JaspervSon", "@JaspervSon", "Jasper van Son", Role.ADMINISTRATOR, null, "Hi ik ben Jasper", "Tilburg", "www.youtube.com"));
+            profileService.AddProfile(new Profile(1, "noreply@StefanoVerhoeve.nl", "StefanoVerhoeve","@StefanoVerhoeve", "Stefano Verhoeve", null, "Hi ik ben Stefano", "Neverland", "www.youtube.com"));
+            profileService.AddProfile(new Profile(2, "noreply@Wazzup.nl", "Wazzup","@Wazzup", "Wazzup", null, "Wolla", "Tilburg", "lemonparty.org"));
         } catch (ProfileException e) {
             e.printStackTrace();
         }

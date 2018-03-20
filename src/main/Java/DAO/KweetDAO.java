@@ -113,7 +113,7 @@ public class KweetDAO implements IKweetDAO {
 
     @Override
     public void RemoveKweet(Kweet kweet) {
-
+        kweet.getOwner().RemoveKweet(kweet);
         kweets.remove(kweet);
     }
 }

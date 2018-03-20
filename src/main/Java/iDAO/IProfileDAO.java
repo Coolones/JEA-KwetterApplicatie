@@ -12,11 +12,13 @@ public interface IProfileDAO {
 
     List<Profile> getProfiles();
 
+    Profile getProfile(int id);
+
     Profile getProfile(String userTag);
 
     Profile getProfileByUserName(String userName);
 
-    Profile AddProfile(Profile profile) throws IllegalArgumentException, ProfileException;
+    Profile AddProfile(Profile profile) throws ProfileException;
 
     Profile EditProfile(Profile profile) throws ProfileException;
 
@@ -24,5 +26,11 @@ public interface IProfileDAO {
 
     void FollowProfile(Profile myProfile, Profile otherProfile);
 
-    void setRole(Profile profile, Role role) throws ProfileException;
+    void setRole(Profile profile, Role role);
+
+    List<Profile> getFollowing(String userTag);
+
+    List<Profile> getFollowers(String userTag);
+
+    void removeProfile(Profile profile);
 }

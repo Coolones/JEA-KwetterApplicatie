@@ -23,9 +23,7 @@ public class KwetterProfileEndpoint {
     @Path("/profiles")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getProfiles() {
-        GenericEntity<List<Profile>> profiles = new GenericEntity<List<Profile>>(profileService.getProfiles()) {};
-
-        return Response.ok(profiles).build();
+        return Response.ok(Enclose(profileService.getProfiles())).build();
     }
 
     @GET
@@ -69,5 +67,59 @@ public class KwetterProfileEndpoint {
         } catch (ProfileException e) {
             return Response.notModified(e.getMessage()).build();
         }
+    }
+
+    @GET
+    @Path("/{email}/authenticate/{password}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response authenticate(@PathParam("email") String email, @PathParam("password") String password) {
+        Profile profile = profileService.Authenticate(email, password);
+        if (profile != null) {
+            return Response.ok(profile).build();
+        }
+        else return Response.status(Response.Status.NOT_FOUND).build();
+    }
+
+    @POST
+    @Path("/{myTag}/follow/{followingTag}")
+    public Response followUser(@PathParam("myTag") String myTag, @PathParam("followingTag") String followingTag) {
+        profileService.FollowProfile(myTag, followingTag);
+        return Response.ok(Enclose(profileService.getFollowing(myTag))).build();
+    }
+
+    @GET
+    @Path("/getFollowing/{myTag}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getFollowing(@PathParam("myTag") String myTag) {
+        return Response.ok(Enclose(profileService.getFollowing(myTag))).build();
+    }
+
+    @GET
+    @Path("/getFollowers/{myTag}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getFollowers(@PathParam("myTag") String myTag) {
+        return Response.ok(Enclose(profileService.getFollowers(myTag))).build();
+    }
+
+    private GenericEntity<List<Profile>> Enclose(List<Profile> profiles) {
+        return new GenericEntity<List<Profile>>(profiles) {};
+    }
+
+    @PUT
+    @Path("/{changerID}/changeRole/{userTag}/{role}")
+    public Response changeRole(@PathParam("changerID") int changerID, @PathParam("userTag") String userTag, @PathParam("role") String role) {
+        try {
+            profileService.setRole(changerID, userTag, role);
+            return Response.ok("Role changed").build();
+        } catch (ProfileException e) {
+            return Response.notModified(e.getMessage()).build();
+        }
+    }
+
+    @DELETE
+    @Path("/{id}")
+    public Response removeProfile(@PathParam("id") int id) {
+        profileService.removeProfile(id);
+        return Response.ok("Profile removed").build();
     }
 }

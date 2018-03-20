@@ -27,9 +27,9 @@ public class ProfileDAO implements IProfileDAO {
         profiles = new ArrayList<>();
 
         try {
-            profiles.add(new Profile(0, "@JaspervSon", "Jasper van Son", null, "Hi ik ben Jasper", "Tilburg", "www.youtube.com"));
-            profiles.add(new Profile(1,"@StefanoVerhoeve", "Stefano Verhoeve", null, "Hi ik ben Stefano", "Neverland", "www.youtube.com"));
-            profiles.add(new Profile(2,"@Wazzup", "Wazzup", null, "Wolla", "Tilburg", "lemonparty.org"));
+            profiles.add(new Profile(0, "noreply@JaspervSon.nl", "JaspervSon", "@JaspervSon", "Jasper van Son", Role.ADMINISTRATOR, null, "Hi ik ben Jasper", "Tilburg", "www.youtube.com"));
+            profiles.add(new Profile(1, "noreply@StefanoVerhoeve.nl", "StefanoVerhoeve", "@StefanoVerhoeve", "Stefano Verhoeve", null, "Hi ik ben Stefano", "Neverland", "www.youtube.com"));
+            profiles.add(new Profile(2, "noreply@Wazzup.nl", "Wazzup", "@Wazzup", "Wazzup", null, "Wolla", "Tilburg", "lemonparty.org"));
         } catch (ProfileException e) {
             e.printStackTrace();
         }
@@ -38,6 +38,17 @@ public class ProfileDAO implements IProfileDAO {
     @Override
     public List<Profile> getProfiles() {
         return profiles;
+    }
+
+    @Override
+    public Profile getProfile(int id) {
+
+        for (Profile profile : profiles) {
+            if (profile.getID() == id) {
+                return profile;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -65,7 +76,7 @@ public class ProfileDAO implements IProfileDAO {
 
         if (!IsUniqueUserTag(profile.getUserTag())) throw new ProfileException("UserTag is already in use");
 
-        profile = new Profile(profiles.size(), profile.getUserTag(), profile.getUserName(), profile.getProfilePicture(), profile.getBio(), profile.getLocation(), profile.getWebsiteURL());
+        profile = new Profile(profiles.size(), profile.getEmail(), profile.getPassword(), profile.getUserTag(), profile.getUserName(), profile.getProfilePicture(), profile.getBio(), profile.getLocation(), profile.getWebsiteURL());
         profiles.add(profile);
 
         return profile;
@@ -96,7 +107,22 @@ public class ProfileDAO implements IProfileDAO {
     }
 
     @Override
-    public void setRole(Profile profile, Role role) throws ProfileException {
+    public void setRole(Profile profile, Role role) {
         profile.setRole(role);
+    }
+
+    @Override
+    public List<Profile> getFollowing(String userTag) {
+        return getProfile(userTag).getFollowing();
+    }
+
+    @Override
+    public List<Profile> getFollowers(String userTag) {
+        return getProfile(userTag).getFollowers();
+    }
+
+    @Override
+    public void removeProfile(Profile profile) {
+        profiles.remove(profile);
     }
 }

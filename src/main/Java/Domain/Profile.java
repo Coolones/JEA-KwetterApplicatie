@@ -17,6 +17,14 @@ public class Profile implements Serializable {
     @XmlTransient
     @JsonIgnore
     private int ID;
+
+    @XmlTransient
+    @JsonIgnore
+    private String email;
+    @XmlTransient
+    @JsonIgnore
+    private String password;
+
     private String userTag;
     private String userName;
     private Role role;
@@ -28,22 +36,47 @@ public class Profile implements Serializable {
     @XmlTransient
     @JsonIgnore
     private List<Kweet> kweets;
+
     @XmlTransient
     @JsonIgnore
     private List<Profile> following;
+
     @XmlTransient
     @JsonIgnore
     private List<Profile> followers;
 
     public Profile() {}
 
-    public Profile(int ID, String userTag, String userName, Image profilePicture, String bio, String location, String websiteURL) throws ProfileException {
+    public Profile(int ID, String email, String password, String userTag, String userName, Role role, Image profilePicture, String bio, String location, String websiteURL) throws ProfileException {
 
         if (ID < 0 || userTag.isEmpty() || userName.isEmpty() || bio.length() > 160) {
-            throw new ProfileException("Please make sure everything is filled in corectly");
+            throw new ProfileException("Please make sure everything is filled in correctly");
         }
 
         this.ID = ID;
+        this.email = email;
+        this.password = password;
+        this.userTag = userTag;
+        this.userName = userName;
+        this.role = role;
+        this.profilePicture = profilePicture;
+        this.bio = bio;
+        this.location = location;
+        this.websiteURL = websiteURL;
+        this.kweets = new ArrayList<>();
+        this.following = new ArrayList<>();
+        this.followers = new ArrayList<>();
+    }
+
+    public Profile(int ID, String email, String password, String userTag, String userName, Image profilePicture, String bio, String location, String websiteURL) throws ProfileException {
+
+        if (ID < 0 || userTag.isEmpty() || userName.isEmpty() || bio.length() > 160) {
+            throw new ProfileException("Please make sure everything is filled in correctly");
+        }
+
+        this.ID = ID;
+        this.email = email;
+        this.password = password;
         this.userTag = userTag;
         this.userName = userName;
         this.role = Role.PROFILE;
@@ -57,7 +90,15 @@ public class Profile implements Serializable {
     }
 
     public void AddKweet(Kweet kweet) {
-        kweets.add(kweet);
+        if (kweet != null) {
+            kweets.add(kweet);
+        }
+    }
+
+    public void RemoveKweet(Kweet kweet) {
+        if (kweets.contains(kweet)) {
+            kweets.remove(kweet);
+        }
     }
 
     public void FollowOther(Profile profile) {
@@ -85,8 +126,28 @@ public class Profile implements Serializable {
         return this;
     }
 
+    public boolean Authenticate(String email, String password) {
+        return this.email.equals(email) && this.password.equals(password);
+    }
+
     public int getID() {
         return ID;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getUserTag() {
@@ -122,7 +183,7 @@ public class Profile implements Serializable {
     }
 
     private void setBio(String bio) throws ProfileException {
-        if (bio.length() > 160) throw new ProfileException("Your bio is to damm long");
+        if (bio.length() > 160) throw new ProfileException("Your bio is longer then 160 characters");
         this.bio = bio;
     }
 

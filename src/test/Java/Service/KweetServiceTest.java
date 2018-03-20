@@ -29,9 +29,9 @@ public class KweetServiceTest {
     @Before
     public void setUp() throws Exception {
 
-        profile = profileService.AddProfile(new Profile(0, "@JaspervSon", "Jasper van Son", null, "Hi ik ben Jasper", "Tilburg", "www.youtube.com"));
-        stefano = profileService.AddProfile(new Profile(1,"@StefanoVerhoeven", "Stefano Verhoeven", null, "Hi ik ben Stefano", "Neverland", "www.youtube.com"));
-        random = profileService.AddProfile(new Profile(2,"@Wazzup", "Wazzup", null, "Wolla", "Tilburg", "lemonparty.org"));
+        profile = profileService.AddProfile(new Profile(0, "noreply@JaspervSon.nl", "JaspervSon", "@JaspervSon", "Jasper van Son", null, "Hi ik ben Jasper", "Tilburg", "www.youtube.com"));
+        stefano = profileService.AddProfile(new Profile(1, "noreply@StefanoVerhoeve.nl", "StefanoVerhoeve","@StefanoVerhoeven", "Stefano Verhoeven", null, "Hi ik ben Stefano", "Neverland", "www.youtube.com"));
+        random = profileService.AddProfile(new Profile(2, "noreply@Wazzup.nl", "Wazzup","@Wazzup", "Wazzup", null, "Wolla", "Tilburg", "lemonparty.org"));
         kweet = kweetService.AddKweet("@JaspervSon", message);
         kweet.AppreciateKweet(stefano);
     }

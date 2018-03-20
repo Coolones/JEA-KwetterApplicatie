@@ -14,6 +14,7 @@ public class Trend implements Serializable {
 
     private int ID;
     private String trend;
+
     @XmlTransient
     @JsonIgnore
     private List<Kweet> kweets;

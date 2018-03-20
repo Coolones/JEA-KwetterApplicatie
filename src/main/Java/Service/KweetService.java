@@ -43,20 +43,21 @@ public class KweetService {
     }
 
     public Kweet AddKweet(String ownerTag, String message) throws KweetException {
-        if (!profileDAO.IsUniqueUserTag(ownerTag)) {
-            List<Profile> mentions = getMentionsByKweet(message);
-            List<Trend> trends = getTrendsByKweet(message);
-            Kweet kweet = kweetDAO.AddKweet(profileDAO.getProfile(ownerTag), message, mentions, trends);
 
-            for (Trend trend : kweet.getTrends()) {
-                trend.AddKweet(kweet);
-            }
-
-            kweet.getOwner().AddKweet(kweet);
-
-            return kweet;
+        if (profileDAO.IsUniqueUserTag(ownerTag) || message.isEmpty() || message.length() > 140) {
+            throw new KweetException("Something went wrong");
         }
-        return null;
+        List<Profile> mentions = getMentionsByKweet(message);
+        List<Trend> trends = getTrendsByKweet(message);
+        Kweet kweet = kweetDAO.AddKweet(profileDAO.getProfile(ownerTag), message, mentions, trends);
+
+        for (Trend trend : kweet.getTrends()) {
+            trend.AddKweet(kweet);
+        }
+
+        kweet.getOwner().AddKweet(kweet);
+
+        return kweet;
     }
 
     public Kweet getKweetByID(int ID) {

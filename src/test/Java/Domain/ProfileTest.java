@@ -16,9 +16,9 @@ public class ProfileTest {
 
     @Before
     public void setUp() throws Exception {
-        profile = new Profile(0, "@JaspervSon", "Jasper van Son", null, "Hi ik ben Jasper", "Tilburg", "www.youtube.com");
-        stefano = new Profile(1,"@StefanoVerhoeven", "Stefano Verhoeven", null, "Hi ik ben Stefano", "Neverland", "www.youtube.com");
-        random = new Profile(2,"@Wazzup", "Wazzup", null, "Wolla", "Tilburg", "lemonparty.org");
+        profile = new Profile(0, "noreply@JaspervSon.nl", "JaspervSon", "@JaspervSon", "Jasper van Son", null, "Hi ik ben Jasper", "Tilburg", "www.youtube.com");
+        stefano = new Profile(1, "noreply@StefanoVerhoeve.nl", "StefanoVerhoeve","@StefanoVerhoeven", "Stefano Verhoeven", null, "Hi ik ben Stefano", "Neverland", "www.youtube.com");
+        random = new Profile(2, "noreply@Wazzup.nl", "Wazzup","@Wazzup", "Wazzup", null, "Wolla", "Tilburg", "lemonparty.org");
     }
 
     @After
@@ -42,7 +42,7 @@ public class ProfileTest {
 
     @Test(expected= ProfileException.class)
     public void EditProfile() throws ProfileException {
-        Profile temp = new Profile(0, "@JaspervSon", "Jasper van Son Joh", null, "Hi ik ben Jasper Joh", "Tilburg Joh", "www.youtube.com/Joh");
+        Profile temp = new Profile(0, "noreply@JaspervSon.nl", "JaspervSon", "@JaspervSon", "Jasper van Son Joh", null, "Hi ik ben Jasper Joh", "Tilburg Joh", "www.youtube.com/Joh");
 
         profile.EditProfile(temp);
     }
