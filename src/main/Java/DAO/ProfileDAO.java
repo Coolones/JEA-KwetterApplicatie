@@ -103,7 +103,7 @@ public class ProfileDAO implements IProfileDAO {
     @Override
     public void FollowProfile(Profile myProfile, Profile otherProfile) {
         myProfile.FollowOther(otherProfile);
-        otherProfile.FollowMe(myProfile);
+        //otherProfile.FollowMe(myProfile);
     }
 
     @Override

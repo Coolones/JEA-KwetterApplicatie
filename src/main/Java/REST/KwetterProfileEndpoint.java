@@ -35,13 +35,24 @@ public class KwetterProfileEndpoint {
         return Response.ok(profile).build();
     }
 
-    @GET
+    /*@GET
     @Path("/profileByUserName/{userName}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getProfileByUserName(@PathParam("userName") String userName) {
+    public Response getProfileByUserName(@QueryParam("userName") String userName) {
         Profile profile = profileService.getProfileByUserName(userName);
 
         return Response.ok(profile).build();
+    }*/
+
+    @GET
+    @Path("/{email}/logIn/{password}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response logIn(@PathParam("email") String email, @PathParam("password") String password) {
+        Profile profile = profileService.Authenticate(email, password);
+        if (profile != null) {
+            return Response.ok(profile).build();
+        }
+        else return Response.status(Response.Status.NOT_FOUND).build();
     }
 
     @POST
@@ -69,17 +80,6 @@ public class KwetterProfileEndpoint {
         }
     }
 
-    @GET
-    @Path("/{email}/authenticate/{password}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response authenticate(@PathParam("email") String email, @PathParam("password") String password) {
-        Profile profile = profileService.Authenticate(email, password);
-        if (profile != null) {
-            return Response.ok(profile).build();
-        }
-        else return Response.status(Response.Status.NOT_FOUND).build();
-    }
-
     @POST
     @Path("/{myTag}/follow/{followingTag}")
     public Response followUser(@PathParam("myTag") String myTag, @PathParam("followingTag") String followingTag) {
@@ -101,10 +101,6 @@ public class KwetterProfileEndpoint {
         return Response.ok(Enclose(profileService.getFollowers(myTag))).build();
     }
 
-    private GenericEntity<List<Profile>> Enclose(List<Profile> profiles) {
-        return new GenericEntity<List<Profile>>(profiles) {};
-    }
-
     @PUT
     @Path("/{changerID}/changeRole/{userTag}/{role}")
     public Response changeRole(@PathParam("changerID") int changerID, @PathParam("userTag") String userTag, @PathParam("role") String role) {
@@ -121,5 +117,9 @@ public class KwetterProfileEndpoint {
     public Response removeProfile(@PathParam("id") int id) {
         profileService.removeProfile(id);
         return Response.ok("Profile removed").build();
+    }
+
+    private GenericEntity<List<Profile>> Enclose(List<Profile> profiles) {
+        return new GenericEntity<List<Profile>>(profiles) {};
     }
 }

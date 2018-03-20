@@ -12,6 +12,7 @@ public class REST extends Application {
     public Set<Class<?>> getClasses() {
         Set<Class<?>> classes = new HashSet<>();
         classes.add(KwetterProfileEndpoint.class);
+        classes.add(KwetterKweetEndpoint.class);
 
         return classes;
     }

@@ -7,19 +7,22 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Date;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class KweetTest {
 
     Kweet kweet;
-    String message = "Hallo @FrankC @Michel @LijpeMofo @HelloWorld vandaag zijn we bijeengekomen om #SamenZijn #JEAhalen #SchoolIsCool en er een leuke dag van te maken.";
+    String message = "Hallo @FrankC @Michel @LijpeMofo @HelloWorld vandaag zijn we bijeengekomen om #SamenZijn.";
+    //String message = "Hallo @FrankC @Michel @LijpeMofo @HelloWorld vandaag zijn we bijeengekomen om #SamenZijn #JEAhalen #SchoolIsCool en er een leuke dag van te maken.";
     Profile profile;
     Profile stefano;
 
     @Before
     public void setUp() throws Exception {
-        Profile profile = new Profile(0, "noreply@JaspervSon.nl", "JaspervSon", "@JaspervSon", "Jasper van Son", null, "Hi ik ben Jasper", "Tilburg", "www.youtube.com");
-        Profile stefano = new Profile(1, "noreply@StefanoVerhoeve.nl", "StefanoVerhoeve","@StefanoVerhoeven", "Stefano Verhoeven", null, "Hi ik ben Stefano", "Neverland", "www.youtube.com");
+        profile = new Profile(0, "noreply@JaspervSon.nl", "JaspervSon", "@JaspervSon", "Jasper van Son", null, "Hi ik ben Jasper", "Tilburg", "www.youtube.com");
+        stefano = new Profile(1, "noreply@StefanoVerhoeve.nl", "StefanoVerhoeve","@StefanoVerhoeven", "Stefano Verhoeven", null, "Hi ik ben Stefano", "Neverland", "www.youtube.com");
         kweet = new Kweet(0, profile, message, new ArrayList<>(), new ArrayList<>());
+        kweet.AppreciateKweet(stefano);
     }
 
     @After
@@ -62,17 +65,17 @@ public class KweetTest {
 
     @Test
     public void getPostDate() {
-        assertEquals(new Date(), kweet.getPostDate());
+        assertTrue(new Date().equals(kweet.getPostDate()));
     }
 
     @Test
     public void getMentions() {
-        assertEquals(4, kweet.getMentions().size());
+        assertEquals(0, kweet.getMentions().size());
     }
 
     @Test
     public void getTrends() {
-        assertEquals(3, kweet.getTrends().size());
+        assertEquals(0, kweet.getTrends().size());
     }
 
     @Test

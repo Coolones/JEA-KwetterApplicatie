@@ -105,6 +105,7 @@ public class Profile implements Serializable {
 
         if (!following.contains(profile)) {
             following.add(profile);
+            profile.FollowMe(this);
         }
     }
 

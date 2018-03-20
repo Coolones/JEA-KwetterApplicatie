@@ -44,6 +44,8 @@ public class Kweet implements Serializable {
         this.mentions = mentions;
         this.trends = trends;
         this.appreciatedBy = new ArrayList<>();
+
+        owner.AddKweet(this);
     }
 
     public void AppreciateKweet(Profile profile) {
@@ -79,5 +81,12 @@ public class Kweet implements Serializable {
 
     public List<Profile> getAppreciatedBy() {
         return appreciatedBy;
+    }
+
+    public void Remove() {
+        for (Trend trend : trends) {
+            trend.RemoveKweet(this);
+        }
+        owner.RemoveKweet(this);
     }
 }

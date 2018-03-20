@@ -79,7 +79,7 @@ public class KweetServiceTest {
 
     @Test
     public void removeKweet() {
-        kweetService.RemoveKweet(kweet);
+        kweetService.RemoveKweet(0, 0);
         assertEquals(0, kweetService.getKweetsFromUser("@JaspervSon"));
     }
 }

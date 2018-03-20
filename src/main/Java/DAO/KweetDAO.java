@@ -6,6 +6,7 @@ import Domain.Trend;
 import Exceptions.KweetException;
 import iDAO.IKweetDAO;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.Default;
 import java.util.*;
@@ -17,8 +18,9 @@ public class KweetDAO implements IKweetDAO {
     private List<Kweet> kweets;
     private List<Trend> trends;
 
-    public KweetDAO() {
-
+    @PostConstruct
+    public void init() {
+        System.out.print("TestKweet");
         kweets = new ArrayList<>();
         trends = new ArrayList<>();
     }
@@ -45,7 +47,10 @@ public class KweetDAO implements IKweetDAO {
     @Override
     public List<Kweet> getTenKweetsFromUser(String ownerTag) {
         List<Kweet> kweets = getKweetsFromUser(ownerTag);
-        return kweets.subList(kweets.size() - 11, kweets.size() - 1);
+        if (kweets.size() > 10) {
+            return kweets.subList(kweets.size() - 11, kweets.size() - 1);
+        }
+        else return kweets;
     }
 
     @Override
@@ -73,7 +78,10 @@ public class KweetDAO implements IKweetDAO {
 
         List<Trend> sortedTrends = new ArrayList(new TreeMap(trendCount).values());
 
-        return sortedTrends.subList(sortedTrends.size() - 11, sortedTrends.size() - 1);
+        if (sortedTrends.size() > 10) {
+            return sortedTrends.subList(sortedTrends.size() - 11, sortedTrends.size() - 1);
+        }
+        else return sortedTrends;
     }
 
     @Override
@@ -113,7 +121,12 @@ public class KweetDAO implements IKweetDAO {
 
     @Override
     public void RemoveKweet(Kweet kweet) {
-        kweet.getOwner().RemoveKweet(kweet);
+        kweet.Remove();
         kweets.remove(kweet);
+    }
+
+    @Override
+    public void AppreciateKweet(Kweet kweet, Profile profile) {
+        kweet.AppreciateKweet(profile);
     }
 }

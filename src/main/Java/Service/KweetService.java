@@ -2,6 +2,7 @@ package Service;
 
 import Domain.Kweet;
 import Domain.Profile;
+import Domain.Role;
 import Domain.Trend;
 import Exceptions.KweetException;
 import iDAO.IKweetDAO;
@@ -39,7 +40,12 @@ public class KweetService {
     }
 
     public List<Kweet> getKweetsByTrend(String trend) {
-        return kweetDAO.getKweetsByTrend(kweetDAO.getTrendByTag(trend));
+        Trend trendObj = kweetDAO.getTrendByTag(trend);
+
+        if (trendObj != null) {
+            return kweetDAO.getKweetsByTrend(trendObj);
+        }
+        else return new ArrayList<>();
     }
 
     public Kweet AddKweet(String ownerTag, String message) throws KweetException {
@@ -55,8 +61,6 @@ public class KweetService {
             trend.AddKweet(kweet);
         }
 
-        kweet.getOwner().AddKweet(kweet);
-
         return kweet;
     }
 
@@ -64,8 +68,20 @@ public class KweetService {
         return kweetDAO.getKweetByID(ID);
     }
 
-    public void RemoveKweet(Kweet kweet) {
-        kweetDAO.RemoveKweet(kweet);
+    public void RemoveKweet(int removerID, int ID) {
+
+        Profile removerProfile = profileDAO.getProfile(removerID);
+
+        if (removerProfile.equals(getKweetByID(ID).getOwner()) ||
+                removerProfile.getRole().equals(Role.MODERATOR) ||
+                removerProfile.getRole().equals(Role.ADMINISTRATOR)) {
+
+            kweetDAO.RemoveKweet(getKweetByID(ID));
+        }
+    }
+
+    public void AppreciateKweet(int myID, int kweetID) {
+        kweetDAO.AppreciateKweet(getKweetByID(kweetID), profileDAO.getProfile(myID));
     }
 
     private List<Profile> getMentionsByKweet(String kweet) {
@@ -95,5 +111,44 @@ public class KweetService {
             }
         }
         return trends;
+    }
+
+    public List<Kweet> getTimelineFromUser(String userTag) {
+
+        Profile profile = profileDAO.getProfile(userTag);
+
+        List<Kweet> timeline = new ArrayList<>();
+
+        for (Kweet kweet : getKweets()) {
+            if (kweet.getOwner().equals(profile) || kweet.getOwner().getFollowers().contains(profile)) {
+                timeline.add(kweet);
+            }
+        }
+        return timeline;
+    }
+
+    public List<Kweet> getMentionsOfUser(String userTag) {
+
+        Profile profile = profileDAO.getProfile(userTag);
+
+        List<Kweet> timeline = new ArrayList<>();
+
+        for (Kweet kweet : getKweets()) {
+            if (kweet.getMentions().contains(profile)) {
+                timeline.add(kweet);
+            }
+        }
+        return timeline;
+    }
+
+    public List<Kweet> findKweets(String find) {
+        List<Kweet> found = new ArrayList<>();
+
+        for (Kweet kweet : getKweets()) {
+            if (kweet.getKweet().toLowerCase().contains(find.toLowerCase())) {
+                found.add(kweet);
+            }
+        }
+        return found;
     }
 }

@@ -30,4 +30,6 @@ public interface IKweetDAO {
     Kweet getKweetByID(int ID);
 
     void RemoveKweet(Kweet kweet);
+
+    void AppreciateKweet(Kweet kweet, Profile profile);
 }
