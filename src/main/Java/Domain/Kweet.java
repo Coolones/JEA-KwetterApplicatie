@@ -3,6 +3,7 @@ package Domain;
 import Exceptions.KweetException;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
@@ -11,25 +12,46 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Entity
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Kweet implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int ID;
+
+    @ManyToOne
     private Profile owner;
     private String kweet;
     private Date postDate;
 
+    @ManyToMany
     @XmlTransient
     @JsonIgnore
     private List<Profile> mentions;
+    @ManyToMany
     @XmlTransient
     @JsonIgnore
     private List<Trend> trends;
+    @ManyToMany
     @XmlTransient
     @JsonIgnore
     private List<Profile> appreciatedBy;
 
     public Kweet() {}
+
+    public Kweet(String kweet, List<Profile> mentions) throws KweetException {
+
+        if (kweet.isEmpty() || kweet.length() > 140) {
+            throw new KweetException("Something went wrong");
+        }
+
+        this.kweet = kweet;
+        this.postDate = new Date();
+        this.mentions = mentions;
+        this.trends = new ArrayList<>();
+        this.appreciatedBy = new ArrayList<>();
+    }
 
     public Kweet(int ID, Profile owner, String kweet, List<Profile> mentions, List<Trend> trends) throws KweetException {
 
@@ -55,12 +77,20 @@ public class Kweet implements Serializable {
         }
     }
 
+    public void AddTrend(Trend trend) {
+        trends.add(trend);
+    }
+
     public int getID() {
         return ID;
     }
 
     public Profile getOwner() {
         return owner;
+    }
+
+    public void setOwner(Profile owner) {
+        this.owner = owner;
     }
 
     public String getKweet() {

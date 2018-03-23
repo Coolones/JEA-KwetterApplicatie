@@ -1,5 +1,6 @@
 package REST;
 
+import Domain.Models.ProfileModel;
 import Domain.Profile;
 import Exceptions.ProfileException;
 import Service.ProfileService;
@@ -59,9 +60,9 @@ public class KwetterProfileEndpoint {
     @Path("/createProfile")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createProfile(Profile profile) {
+    public Response createProfile(ProfileModel profile) {
         try {
-            return Response.ok(profileService.AddProfile(profile)).build();
+            return Response.ok(profileService.AddProfile(new Profile(profile))).build();
         } catch (ProfileException e) {
             return Response.notModified(e.getMessage()).build();
         }

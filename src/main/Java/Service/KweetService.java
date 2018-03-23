@@ -7,6 +7,7 @@ import Domain.Trend;
 import Exceptions.KweetException;
 import iDAO.IKweetDAO;
 import iDAO.IProfileDAO;
+import iDAO.JPA;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -16,9 +17,11 @@ import java.util.*;
 public class KweetService {
 
     @Inject
+    @JPA
     private IKweetDAO kweetDAO;
 
     @Inject
+    @JPA
     private IProfileDAO profileDAO;
 
     public KweetService() {}

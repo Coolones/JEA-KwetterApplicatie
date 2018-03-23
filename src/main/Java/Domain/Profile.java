@@ -1,19 +1,23 @@
 package Domain;
 
+import Domain.Models.ProfileModel;
 import Exceptions.ProfileException;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
-import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Profile implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @XmlTransient
     @JsonIgnore
     private int ID;
@@ -28,26 +32,81 @@ public class Profile implements Serializable {
     private String userTag;
     private String userName;
     private Role role;
-    private Image profilePicture;
+    private byte[] profilePicture;
     private String bio;
     private String location;
     private String websiteURL;
 
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "owner")
     @XmlTransient
     @JsonIgnore
     private List<Kweet> kweets;
 
+    @ManyToMany
     @XmlTransient
     @JsonIgnore
     private List<Profile> following;
 
+    @ManyToMany(cascade = CascadeType.PERSIST, mappedBy = "following")
     @XmlTransient
     @JsonIgnore
     private List<Profile> followers;
 
     public Profile() {}
 
-    public Profile(int ID, String email, String password, String userTag, String userName, Role role, Image profilePicture, String bio, String location, String websiteURL) throws ProfileException {
+    public Profile(ProfileModel profile) {
+        this.email = profile.getEmail();
+        this.password = profile.getPassword();
+        this.userTag = profile.getUserTag();
+        this.userName = profile.getUserName();
+        this.role = Role.PROFILE;
+        this.profilePicture = profile.getProfilePicture();
+        this.bio = profile.getBio();
+        this.location = profile.getLocation();
+        this.websiteURL = profile.getWebsiteURL();
+    }
+
+    public Profile(String email, String password, String userTag, String userName, Role role, byte[] profilePicture, String bio, String location, String websiteURL) throws ProfileException {
+
+        if (userTag.isEmpty() || userName.isEmpty() || bio.length() > 160) {
+            throw new ProfileException("Please make sure everything is filled in correctly");
+        }
+
+        this.email = email;
+        this.password = password;
+        this.userTag = userTag;
+        this.userName = userName;
+        this.role = role;
+        this.profilePicture = profilePicture;
+        this.bio = bio;
+        this.location = location;
+        this.websiteURL = websiteURL;
+        this.kweets = new ArrayList<>();
+        this.following = new ArrayList<>();
+        this.followers = new ArrayList<>();
+    }
+
+    public Profile(String email, String password, String userTag, String userName, byte[] profilePicture, String bio, String location, String websiteURL) throws ProfileException {
+
+        if (userTag.isEmpty() || userName.isEmpty() || bio.length() > 160) {
+            throw new ProfileException("Please make sure everything is filled in correctly");
+        }
+
+        this.email = email;
+        this.password = password;
+        this.userTag = userTag;
+        this.userName = userName;
+        this.profilePicture = profilePicture;
+        this.bio = bio;
+        this.location = location;
+        this.websiteURL = websiteURL;
+        this.kweets = new ArrayList<>();
+        this.following = new ArrayList<>();
+        this.followers = new ArrayList<>();
+    }
+
+
+    public Profile(int ID, String email, String password, String userTag, String userName, Role role, byte[] profilePicture, String bio, String location, String websiteURL) throws ProfileException {
 
         if (ID < 0 || userTag.isEmpty() || userName.isEmpty() || bio.length() > 160) {
             throw new ProfileException("Please make sure everything is filled in correctly");
@@ -68,7 +127,7 @@ public class Profile implements Serializable {
         this.followers = new ArrayList<>();
     }
 
-    public Profile(int ID, String email, String password, String userTag, String userName, Image profilePicture, String bio, String location, String websiteURL) throws ProfileException {
+    public Profile(int ID, String email, String password, String userTag, String userName, byte[] profilePicture, String bio, String location, String websiteURL) throws ProfileException {
 
         if (ID < 0 || userTag.isEmpty() || userName.isEmpty() || bio.length() > 160) {
             throw new ProfileException("Please make sure everything is filled in correctly");
@@ -92,6 +151,7 @@ public class Profile implements Serializable {
     public void AddKweet(Kweet kweet) {
         if (kweet != null) {
             kweets.add(kweet);
+            kweet.setOwner(this);
         }
     }
 
@@ -109,7 +169,7 @@ public class Profile implements Serializable {
         }
     }
 
-    public void FollowMe(Profile profile) {
+    private void FollowMe(Profile profile) {
 
         if (!followers.contains(profile)) {
             followers.add(profile);
@@ -171,11 +231,11 @@ public class Profile implements Serializable {
         this.role = role;
     }
 
-    public Image getProfilePicture() {
+    public byte[] getProfilePicture() {
         return profilePicture;
     }
 
-    private void setProfilePicture(Image profilePicture) {
+    private void setProfilePicture(byte[] profilePicture) {
         this.profilePicture = profilePicture;
     }
 

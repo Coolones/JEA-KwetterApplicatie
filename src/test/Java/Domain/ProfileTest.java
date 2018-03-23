@@ -42,14 +42,6 @@ public class ProfileTest {
         assertEquals(1, profile.getFollowing().size());
     }
 
-    @Test
-    public void followMe() {
-        profile.FollowMe(stefano);
-        profile.FollowMe(random);
-
-        assertEquals(2, profile.getFollowers().size());
-    }
-
     @Test(expected= ProfileException.class)
     public void EditProfile() throws ProfileException {
         Profile temp = new Profile(0, "noreply@JaspervSon.nl", "JaspervSon", "@JaspervSon", "Jasper van Son Joh", null, randomBio, "Tilburg Joh", "www.youtube.com/Joh");

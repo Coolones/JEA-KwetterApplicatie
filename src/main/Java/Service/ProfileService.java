@@ -4,6 +4,7 @@ import Domain.Profile;
 import Domain.Role;
 import Exceptions.ProfileException;
 import iDAO.IProfileDAO;
+import iDAO.JPA;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -15,6 +16,7 @@ import java.util.List;
 public class ProfileService {
 
     @Inject
+    @JPA
     private IProfileDAO profileDAO;
 
     public ProfileService() {}
