@@ -1,6 +1,8 @@
 package Domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -20,6 +22,7 @@ public class Trend implements Serializable {
     private String trend;
 
     @ManyToMany(cascade = CascadeType.PERSIST, mappedBy = "trends")
+    @LazyCollection(LazyCollectionOption.FALSE)
     @XmlTransient
     @JsonIgnore
     private List<Kweet> kweets;

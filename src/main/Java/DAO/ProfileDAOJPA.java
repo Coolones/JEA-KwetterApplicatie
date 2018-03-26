@@ -23,19 +23,17 @@ public class ProfileDAOJPA implements IProfileDAO {
     private EntityManager em;
     private CriteriaBuilder cb;
     private CriteriaQuery<Profile> cp;
-    private Root<Profile> profile;
+    private Root<Profile> profileRoot;
 
     @PostConstruct
     public void init() {
         System.out.print("Initializing profiles query");
 
         cb = em.getCriteriaBuilder();
-        cp = cb.createQuery(Profile.class);
-        profile = cp.from(Profile.class);
-        cp.select(profile);
+        setupJPA();
 
         try {
-            AddProfile(new Profile("noreply@JaspervSon.nl", "JaspervSon", "@JaspervSon", "Jasper van Son", Role.ADMINISTRATOR, null, "Hi ik ben Jasper", "Tilburg", "www.youtube.com"));
+            em.persist(new Profile("noreply@JaspervSon.nl", "JaspervSon", "@JaspervSon", "Jasper van Son", Role.ADMINISTRATOR, null, "Hi ik ben Jasper", "Tilburg", "www.youtube.com"));
             AddProfile(new Profile("noreply@StefanoVerhoeve.nl", "StefanoVerhoeve", "@StefanoVerhoeve", "Stefano Verhoeve", null, "Hi ik ben Stefano", "Neverland", "www.youtube.com"));
             AddProfile(new Profile("noreply@Wazzup.nl", "Wazzup", "@Wazzup", "Wazzup", null, "Wolla", "Tilburg", "lemonparty.org"));
         } catch (ProfileException e) {
@@ -45,6 +43,7 @@ public class ProfileDAOJPA implements IProfileDAO {
 
     @Override
     public List<Profile> getProfiles() {
+        setupJPA();
         return em.createQuery(cp).getResultList();
     }
 
@@ -55,12 +54,14 @@ public class ProfileDAOJPA implements IProfileDAO {
 
     @Override
     public Profile getProfile(String userTag) {
-        return em.createQuery(cp.where(cb.equal(profile.get("userTag"), userTag))).getSingleResult();
+        setupJPA();
+        return em.createQuery(cp.where(cb.equal(profileRoot.get("userTag"), userTag))).getSingleResult();
     }
 
     @Override
     public Profile getProfileByUserName(String userName) {
-        return em.createQuery(cp.where(cb.equal(profile.get("userName"), userName))).getSingleResult();
+        setupJPA();
+        return em.createQuery(cp.where(cb.equal(profileRoot.get("userName"), userName))).getSingleResult();
     }
 
     @Override
@@ -86,7 +87,8 @@ public class ProfileDAOJPA implements IProfileDAO {
     @Override
     public boolean IsUniqueUserTag(String userTag) {
         try {
-            return (em.createQuery(cp.where(cb.equal(profile.get("userTag"), userTag))).getResultList().isEmpty());
+            setupJPA();
+            return (em.createQuery(cp.where(cb.equal(profileRoot.get("userTag"), userTag))).getResultList().isEmpty());
         }
         catch(Exception ex) {
             System.out.print(ex.getMessage());
@@ -122,5 +124,11 @@ public class ProfileDAOJPA implements IProfileDAO {
     @Override
     public void removeProfile(Profile profile) {
         em.remove(profile);
+    }
+
+    public void setupJPA() {
+        cp = cb.createQuery(Profile.class);
+        profileRoot = cp.from(Profile.class);
+        cp.select(profileRoot);
     }
 }

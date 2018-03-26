@@ -2,6 +2,8 @@ package Domain;
 
 import Exceptions.KweetException;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -26,14 +28,17 @@ public class Kweet implements Serializable {
     private Date postDate;
 
     @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
     @XmlTransient
     @JsonIgnore
     private List<Profile> mentions;
     @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
     @XmlTransient
     @JsonIgnore
     private List<Trend> trends;
     @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
     @XmlTransient
     @JsonIgnore
     private List<Profile> appreciatedBy;

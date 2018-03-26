@@ -3,6 +3,8 @@ package Domain;
 import Domain.Models.ProfileModel;
 import Exceptions.ProfileException;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -31,6 +33,7 @@ public class Profile implements Serializable {
 
     private String userTag;
     private String userName;
+    @Enumerated(EnumType.STRING)
     private Role role;
     private byte[] profilePicture;
     private String bio;
@@ -38,16 +41,19 @@ public class Profile implements Serializable {
     private String websiteURL;
 
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "owner")
+    @LazyCollection(LazyCollectionOption.FALSE)
     @XmlTransient
     @JsonIgnore
     private List<Kweet> kweets;
 
     @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
     @XmlTransient
     @JsonIgnore
     private List<Profile> following;
 
     @ManyToMany(cascade = CascadeType.PERSIST, mappedBy = "following")
+    @LazyCollection(LazyCollectionOption.FALSE)
     @XmlTransient
     @JsonIgnore
     private List<Profile> followers;
@@ -96,6 +102,7 @@ public class Profile implements Serializable {
         this.password = password;
         this.userTag = userTag;
         this.userName = userName;
+        this.role = Role.PROFILE;
         this.profilePicture = profilePicture;
         this.bio = bio;
         this.location = location;
