@@ -21,7 +21,7 @@ public class Trend implements Serializable {
     private int ID;
     private String trend;
 
-    @ManyToMany(cascade = CascadeType.PERSIST, mappedBy = "trends")
+    @ManyToMany
     @LazyCollection(LazyCollectionOption.FALSE)
     @XmlTransient
     @JsonIgnore

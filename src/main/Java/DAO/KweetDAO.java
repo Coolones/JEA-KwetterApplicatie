@@ -129,4 +129,14 @@ public class KweetDAO implements IKweetDAO {
     public void AppreciateKweet(Kweet kweet, Profile profile) {
         kweet.AppreciateKweet(profile);
     }
+
+    @Override
+    public void setupKweetJPA() {
+
+    }
+
+    @Override
+    public void setupTrendJPA() {
+
+    }
 }

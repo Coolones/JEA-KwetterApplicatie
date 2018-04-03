@@ -27,23 +27,29 @@ public class Kweet implements Serializable {
     private String kweet;
     private Date postDate;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(name = "kweet_mention")
     @LazyCollection(LazyCollectionOption.FALSE)
     @XmlTransient
     @JsonIgnore
     private List<Profile> mentions;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST, mappedBy ="kweets")
     @LazyCollection(LazyCollectionOption.FALSE)
     @XmlTransient
     @JsonIgnore
     private List<Trend> trends;
-    @ManyToMany
+    @ManyToMany(cascade=CascadeType.PERSIST)
+    @JoinTable(name = "kweet_appreciate")
     @LazyCollection(LazyCollectionOption.FALSE)
     @XmlTransient
     @JsonIgnore
     private List<Profile> appreciatedBy;
 
     public Kweet() {}
+
+    public Kweet(String kweet) {
+        this.kweet = kweet;
+    }
 
     public Kweet(String kweet, List<Profile> mentions) throws KweetException {
 

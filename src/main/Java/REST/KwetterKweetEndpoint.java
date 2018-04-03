@@ -94,6 +94,7 @@ public class KwetterKweetEndpoint {
     }
 
     @POST
+    @Path("/createKweet")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response AddKweet(Kweet kweet) {

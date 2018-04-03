@@ -6,10 +6,8 @@ import Exceptions.ProfileException;
 import iDAO.IProfileDAO;
 import iDAO.JPA;
 
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import java.awt.*;
 import java.util.List;
 
 @Stateless

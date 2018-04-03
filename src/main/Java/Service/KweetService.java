@@ -60,10 +60,6 @@ public class KweetService {
         List<Trend> trends = getTrendsByKweet(message);
         Kweet kweet = kweetDAO.AddKweet(profileDAO.getProfile(ownerTag), message, mentions, trends);
 
-        for (Trend trend : kweet.getTrends()) {
-            trend.AddKweet(kweet);
-        }
-
         return kweet;
     }
 

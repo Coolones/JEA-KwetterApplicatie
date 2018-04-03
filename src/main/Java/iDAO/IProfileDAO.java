@@ -32,5 +32,7 @@ public interface IProfileDAO {
 
     List<Profile> getFollowers(String userTag);
 
+    void AddKweet(String userTag, Kweet kweet);
+
     void removeProfile(Profile profile);
 }

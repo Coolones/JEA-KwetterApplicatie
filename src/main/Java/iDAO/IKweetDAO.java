@@ -32,4 +32,8 @@ public interface IKweetDAO {
     void RemoveKweet(Kweet kweet);
 
     void AppreciateKweet(Kweet kweet, Profile profile);
+
+    void setupKweetJPA();
+
+    void setupTrendJPA();
 }

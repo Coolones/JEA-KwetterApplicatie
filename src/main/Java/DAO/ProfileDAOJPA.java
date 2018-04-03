@@ -1,5 +1,6 @@
 package DAO;
 
+import Domain.Kweet;
 import Domain.Profile;
 import Domain.Role;
 import Exceptions.ProfileException;
@@ -124,6 +125,14 @@ public class ProfileDAOJPA implements IProfileDAO {
     @Override
     public void removeProfile(Profile profile) {
         em.remove(profile);
+    }
+
+    @Override
+    public void AddKweet(String userTag, Kweet kweet) {
+        Profile profile = getProfile(userTag);
+        profile.AddKweet(kweet);
+
+        em.merge(profile);
     }
 
     public void setupJPA() {

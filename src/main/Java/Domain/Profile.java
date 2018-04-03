@@ -60,6 +60,10 @@ public class Profile implements Serializable {
 
     public Profile() {}
 
+    public Profile(String userTag) {
+        this.userTag = userTag;
+    }
+
     public Profile(ProfileModel profile) {
         this.email = profile.getEmail();
         this.password = profile.getPassword();

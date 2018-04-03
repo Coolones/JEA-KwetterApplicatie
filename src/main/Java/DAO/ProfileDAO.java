@@ -122,6 +122,11 @@ public class ProfileDAO implements IProfileDAO {
     }
 
     @Override
+    public void AddKweet(String userTag, Kweet kweet) {
+        getProfile(userTag).AddKweet(kweet);
+    }
+
+    @Override
     public void removeProfile(Profile profile) {
         profiles.remove(profile);
     }

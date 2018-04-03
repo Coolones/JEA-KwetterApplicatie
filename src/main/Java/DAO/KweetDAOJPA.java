@@ -12,6 +12,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -31,52 +32,58 @@ public class KweetDAOJPA implements IKweetDAO {
     private CriteriaBuilder cb;
     private CriteriaQuery<Kweet> ck;
     private CriteriaQuery<Trend> ct;
-    private Root<Kweet> kweet;
-    private Root<Trend> trend;
+    private Root<Kweet> kweetRoot;
+    private Root<Trend> trendRoot;
 
     @PostConstruct
     public void init() {
         System.out.print("Initializing profiles query");
 
         cb = em.getCriteriaBuilder();
-        ck = cb.createQuery(Kweet.class);
-        ct = cb.createQuery(Trend.class);
-        kweet = ck.from(Kweet.class);
-        trend = ct.from(Trend.class);
-        ck.select(kweet);
-        ct.select(trend);
+        setupKweetJPA();
+        setupTrendJPA();
     }
 
     @Override
     public List<Kweet> getKweets() {
+        setupKweetJPA();
         return em.createQuery(ck).getResultList();
     }
 
     @Override
     public List<Kweet> getKweetsFromUser(String ownerTag) {
         return profileDAO.getProfile(ownerTag).getKweets();
-        //return em.createQuery(ck.where(cb.equal(kweet.get("owner").get("userTag"), ownerTag))).getResultList();
-        //return em.createQuery(ck.where(cb.equal(kweet.get("owner"), profileDAO.getProfile(ownerTag)))).getResultList();
+        //return em.createQuery(ck.where(cb.equal(kweetRoot.get("owner").get("userTag"), ownerTag))).getResultList();
+        //return em.createQuery(ck.where(cb.equal(kweetRoot.get("owner"), profileDAO.getProfile(ownerTag)))).getResultList();
     }
 
     @Override
     public List<Kweet> getTenKweetsFromUser(String ownerTag) {
-        return em.createQuery(ck.where(cb.equal(kweet.get("owner"), profileDAO.getProfile(ownerTag)))).setMaxResults(10).getResultList();
+        setupKweetJPA();
+        return em.createQuery(ck.where(cb.equal(kweetRoot.get("owner"), profileDAO.getProfile(ownerTag)))).setMaxResults(10).getResultList();
     }
 
     @Override
     public List<Trend> getTrends() {
+        setupTrendJPA();
         return em.createQuery(ct).getResultList();
     }
 
     @Override
     public Trend getTrendByTag(String trendTag) {
-        return em.createQuery(ct.where(cb.equal(trend.get("trend"), trendTag))).getSingleResult();
-    }
+        setupTrendJPA();
+        try {
+            Trend trend = em.createQuery(ct.where(cb.equal(trendRoot.get("trend"), trendTag))).getSingleResult();
+            return trend;
+        } catch (NoResultException ex) {
+            return null;
+        }
+}
 
     @Override
     public List<Trend> getMostPopularTrends() {
-        return em.createQuery(ct.orderBy(cb.desc(cb.size(trend.get("kweets"))))).setMaxResults(10).getResultList();
+        setupTrendJPA();
+        return em.createQuery(ct.orderBy(cb.desc(cb.size(trendRoot.get("kweets"))))).setMaxResults(10).getResultList();
     }
 
     @Override
@@ -87,14 +94,21 @@ public class KweetDAOJPA implements IKweetDAO {
     @Override
     public Kweet AddKweet(Profile owner, String message, List<Profile> mentions, List<Trend> trends) throws IllegalArgumentException, KweetException {
 
-        if (profileDAO.IsUniqueUserTag(owner.getUserTag())) {
+        if (!profileDAO.IsUniqueUserTag(owner.getUserTag())) {
 
             Kweet kweet = new Kweet(message, mentions);
             em.persist(kweet);
 
+            for (Trend trend : trends) {
+                Trend JPAtrend = getTrendByTag(trend.getTrend());
+                JPAtrend.AddKweet(kweet);
+                em.merge(JPAtrend);
+            }
+
             Profile profile = profileDAO.getProfile(owner.getUserTag());
             profile.AddKweet(kweet);
             em.merge(profile);
+            //profileDAO.AddKweet(owner.getUserTag(), kweet);
 
             return kweet;
         }
@@ -125,5 +139,19 @@ public class KweetDAOJPA implements IKweetDAO {
     public void AppreciateKweet(Kweet kweet, Profile profile) {
         kweet.AppreciateKweet(profile);
         em.merge(kweet);
+    }
+
+    @Override
+    public void setupKweetJPA() {
+        ck = cb.createQuery(Kweet.class);
+        kweetRoot = ck.from(Kweet.class);
+        ck.select(kweetRoot);
+    }
+
+    @Override
+    public void setupTrendJPA() {
+        ct = cb.createQuery(Trend.class);
+        trendRoot = ct.from(Trend.class);
+        ct.select(trendRoot);
     }
 }
