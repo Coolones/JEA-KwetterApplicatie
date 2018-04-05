@@ -102,4 +102,9 @@ public class ProfileService {
         }
         return null;
     }
+
+    public Profile AuthenticateAdmin(String email, String password) {
+        Profile admin = Authenticate(email, password);
+        return admin.getRole() == Role.ADMINISTRATOR ? admin : null;
+    }
 }

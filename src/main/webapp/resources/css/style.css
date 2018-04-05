@@ -1,0 +1,39 @@
+body {
+    font-family: verdana;
+    font-size: 12px;
+}
+
+.container {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.center {
+    height: 275px;
+    width: 280px;
+    background-color: #ededed;
+    padding: 25px;
+    padding-top: 8px;
+    border-radius: 25px;
+}
+
+.inputField {
+    height: 40px;
+    width: 261px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-left: 10px;
+    border-radius: 5px;
+}
+
+.button {
+    height: 40px;
+    width: 275px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: white;
+    background-color: #42b3f4;
+    border-radius: 5px;
+}
