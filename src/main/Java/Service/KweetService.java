@@ -68,11 +68,11 @@ public class KweetService implements Serializable {
         return kweetDAO.getKweetByID(ID);
     }
 
-    public void RemoveKweet(int removerID, int ID) {
+    public void RemoveKweet(String removerEmail, int ID) {
 
-        Profile removerProfile = profileDAO.getProfile(removerID);
+        Profile removerProfile = profileDAO.getProfileByEmail(removerEmail);
 
-        if (removerProfile.getID() == getKweetByID(ID).getOwner().getID() ||
+        if (removerProfile.getEmail() == getKweetByID(ID).getOwner().getEmail() ||
                 removerProfile.getRole().equals(Role.MODERATOR) ||
                 removerProfile.getRole().equals(Role.ADMINISTRATOR)) {
 
@@ -81,8 +81,8 @@ public class KweetService implements Serializable {
         }
     }
 
-    public void AppreciateKweet(int myID, int kweetID) {
-        kweetDAO.AppreciateKweet(getKweetByID(kweetID), profileDAO.getProfile(myID));
+    public void AppreciateKweet(String myEmail, int kweetID) {
+        kweetDAO.AppreciateKweet(getKweetByID(kweetID), profileDAO.getProfileByEmail(myEmail));
     }
 
     private List<Profile> getMentionsByKweet(String kweet) {

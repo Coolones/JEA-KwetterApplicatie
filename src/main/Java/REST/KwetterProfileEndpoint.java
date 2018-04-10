@@ -103,10 +103,10 @@ public class KwetterProfileEndpoint {
     }
 
     @PUT
-    @Path("/{changerID}/changeRole/{userTag}/{role}")
-    public Response changeRole(@PathParam("changerID") int changerID, @PathParam("userTag") String userTag, @PathParam("role") String role) {
+    @Path("/{changerEmail}/changeRole/{userTag}/{role}")
+    public Response changeRole(@PathParam("changerEmail") String changerEmail, @PathParam("userTag") String userTag, @PathParam("role") String role) {
         try {
-            profileService.setRole(changerID, userTag, role);
+            profileService.setRole(changerEmail, userTag, role);
             return Response.ok("Role changed").build();
         } catch (ProfileException e) {
             return Response.notModified(e.getMessage()).build();

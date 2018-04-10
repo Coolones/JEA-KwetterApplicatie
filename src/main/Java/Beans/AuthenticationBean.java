@@ -26,22 +26,25 @@ public class AuthenticationBean implements Serializable {
 
     public String authenticateAdmin() {
 
-        /*FacesContext context = FacesContext.getCurrentInstance();
+        // Preload database
+        profileService.Load();
+
+        FacesContext context = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
 
         try {
             request.login(email, password);
 
             Principal principal = request.getUserPrincipal();
-            administrator = profileService.getProfile(principal.getName());*/
+            administrator = profileService.getProfileByEmail(principal.getName());
 
-            administrator = profileService.AuthenticateAdmin(email, password);
+            //administrator = profileService.AuthenticateAdmin(email, password);
             if (administrator != null && (administrator.getRole() == Role.MODERATOR || administrator.getRole() == Role.ADMINISTRATOR)) return "admin/administrator.xhtml?faces-redirect=true";
             else return "error/invalidAccount.xhtml?faces-redirect=true";
-        /*} catch (ServletException e) {
+        } catch (ServletException e) {
             System.out.println(e.getStackTrace().toString());
             return "error/invalidAccount.xhtml?faces-redirect=true";
-        }*/
+        }
     }
 
     public String getEmail() {
