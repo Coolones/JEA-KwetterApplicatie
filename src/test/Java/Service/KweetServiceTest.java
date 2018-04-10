@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
 
 public class KweetServiceTest {
 
-    Profile profile;
+    /*Profile profile;
     Profile stefano;
     Profile random;
 
@@ -81,5 +81,5 @@ public class KweetServiceTest {
     public void removeKweet() {
         kweetService.RemoveKweet(0, 0);
         assertEquals(0, kweetService.getKweetsFromUser("@JaspervSon"));
-    }
+    }*/
 }

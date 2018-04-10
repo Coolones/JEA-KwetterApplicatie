@@ -1,15 +1,20 @@
 package Beans;
 
 import Domain.Profile;
+import Domain.Role;
 import Service.ProfileService;
 
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
+import java.security.Principal;
 
 @Named
-@RequestScoped
+@SessionScoped
 public class AuthenticationBean implements Serializable {
 
     @Inject
@@ -19,8 +24,24 @@ public class AuthenticationBean implements Serializable {
     private String password;
     private Profile administrator;
 
-    public void authenticateAdmin() {
-        administrator =  profileService.AuthenticateAdmin(email, password);
+    public String authenticateAdmin() {
+
+        /*FacesContext context = FacesContext.getCurrentInstance();
+        HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+
+        try {
+            request.login(email, password);
+
+            Principal principal = request.getUserPrincipal();
+            administrator = profileService.getProfile(principal.getName());*/
+
+            administrator = profileService.AuthenticateAdmin(email, password);
+            if (administrator != null && (administrator.getRole() == Role.MODERATOR || administrator.getRole() == Role.ADMINISTRATOR)) return "admin/administrator.xhtml?faces-redirect=true";
+            else return "error/invalidAccount.xhtml?faces-redirect=true";
+        /*} catch (ServletException e) {
+            System.out.println(e.getStackTrace().toString());
+            return "error/invalidAccount.xhtml?faces-redirect=true";
+        }*/
     }
 
     public String getEmail() {

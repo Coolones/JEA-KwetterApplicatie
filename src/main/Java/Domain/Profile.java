@@ -24,13 +24,16 @@ public class Profile implements Serializable {
     @JsonIgnore
     private int ID;
 
-    @XmlTransient
-    @JsonIgnore
+    //@Id
+    /*@XmlTransient
+    @JsonIgnore*/
+    @Column(unique = true)
     private String email;
     @XmlTransient
     @JsonIgnore
     private String password;
 
+    @Column(unique = true)
     private String userTag;
     private String userName;
     @Enumerated(EnumType.STRING)
@@ -40,7 +43,7 @@ public class Profile implements Serializable {
     private String location;
     private String websiteURL;
 
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "owner")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
     @LazyCollection(LazyCollectionOption.FALSE)
     @XmlTransient
     @JsonIgnore
@@ -52,11 +55,19 @@ public class Profile implements Serializable {
     @JsonIgnore
     private List<Profile> following;
 
-    @ManyToMany(cascade = CascadeType.PERSIST, mappedBy = "following")
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "following")
     @LazyCollection(LazyCollectionOption.FALSE)
     @XmlTransient
     @JsonIgnore
     private List<Profile> followers;
+
+
+    /*@ManyToOne
+    @JoinTable(name = "profile_profileGroup", joinColumns = @JoinColumn(name = "email", referencedColumnName = "email"),
+            inverseJoinColumns = @JoinColumn(name = "groupName", referencedColumnName = "groupName"))
+    @XmlTransient
+    @JsonIgnore
+    private ProfileGroup group;*/
 
     public Profile() {}
 
@@ -196,6 +207,18 @@ public class Profile implements Serializable {
         setWebsiteURL(profile.getWebsiteURL());
 
         return this;
+    }
+
+    /*public ProfileGroup getGroup() {
+        return group;
+    }
+
+    public void setGroup(ProfileGroup group) {
+        this.group = group;
+    }*/
+
+    public boolean SearchProfile(String search) {
+        return email.toLowerCase().contains(search) || userTag.toLowerCase().contains(search) || userName.toLowerCase().contains(search);
     }
 
     public boolean Authenticate(String email, String password) {

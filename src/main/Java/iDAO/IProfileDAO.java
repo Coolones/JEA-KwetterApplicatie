@@ -5,7 +5,6 @@ import Domain.Profile;
 import Domain.Role;
 import Exceptions.ProfileException;
 
-import java.awt.*;
 import java.util.List;
 
 public interface IProfileDAO {
@@ -35,4 +34,6 @@ public interface IProfileDAO {
     void AddKweet(String userTag, Kweet kweet);
 
     void removeProfile(Profile profile);
+
+    void removeKweet(String userTag, Kweet kweet);
 }

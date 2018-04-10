@@ -1,5 +1,6 @@
 package Service;
 
+import Domain.Kweet;
 import Domain.Profile;
 import Domain.Role;
 import Exceptions.ProfileException;
@@ -8,10 +9,11 @@ import iDAO.JPA;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import java.io.Serializable;
 import java.util.List;
 
 @Stateless
-public class ProfileService {
+public class ProfileService implements Serializable {
 
     @Inject
     @JPA
@@ -56,7 +58,7 @@ public class ProfileService {
 
     public void setRole(int changerID, String userTag, String role) throws ProfileException {
 
-        if (getProfile(changerID).getRole() == Role.ADMINISTRATOR && !IsUniqueUserTag(userTag)) {
+        if (getProfile(changerID).getRole() != Role.PROFILE && !IsUniqueUserTag(userTag)) {
             Role enumRole;
 
             switch (role) {
@@ -105,6 +107,6 @@ public class ProfileService {
 
     public Profile AuthenticateAdmin(String email, String password) {
         Profile admin = Authenticate(email, password);
-        return admin.getRole() == Role.ADMINISTRATOR ? admin : null;
+        return  admin != null && (admin.getRole() == Role.ADMINISTRATOR || admin.getRole() == Role.MODERATOR) ? admin : null;
     }
 }

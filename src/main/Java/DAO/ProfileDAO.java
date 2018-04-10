@@ -130,4 +130,9 @@ public class ProfileDAO implements IProfileDAO {
     public void removeProfile(Profile profile) {
         profiles.remove(profile);
     }
+
+    @Override
+    public void removeKweet(String userTag, Kweet kweet) {
+
+    }
 }

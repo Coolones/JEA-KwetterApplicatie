@@ -2,6 +2,7 @@ package DAO;
 
 import Domain.Kweet;
 import Domain.Profile;
+import Domain.ProfileGroup;
 import Domain.Role;
 import Exceptions.ProfileException;
 import iDAO.IProfileDAO;
@@ -23,7 +24,9 @@ public class ProfileDAOJPA implements IProfileDAO {
     @PersistenceContext(unitName = "kwetterPU")
     private EntityManager em;
     private CriteriaBuilder cb;
+    private CriteriaQuery<ProfileGroup> cpg;
     private CriteriaQuery<Profile> cp;
+    private Root<ProfileGroup> profileGroupRoot;
     private Root<Profile> profileRoot;
 
     @PostConstruct
@@ -31,12 +34,29 @@ public class ProfileDAOJPA implements IProfileDAO {
         System.out.print("Initializing profiles query");
 
         cb = em.getCriteriaBuilder();
+        setupProfileGroupJPA();
         setupJPA();
 
         try {
-            em.persist(new Profile("noreply@JaspervSon.nl", "JaspervSon", "@JaspervSon", "Jasper van Son", Role.ADMINISTRATOR, null, "Hi ik ben Jasper", "Tilburg", "www.youtube.com"));
-            AddProfile(new Profile("noreply@StefanoVerhoeve.nl", "StefanoVerhoeve", "@StefanoVerhoeve", "Stefano Verhoeve", null, "Hi ik ben Stefano", "Neverland", "www.youtube.com"));
-            AddProfile(new Profile("noreply@Wazzup.nl", "Wazzup", "@Wazzup", "Wazzup", null, "Wolla", "Tilburg", "lemonparty.org"));
+            /*ProfileGroup profile = new ProfileGroup("PROFILE");
+            em.persist(profile);
+            em.persist(new ProfileGroup("MODERATOR"));
+            ProfileGroup administrator = new ProfileGroup("ADMINISTRATOR");
+            em.persist(administrator);*/
+
+            Profile Jasper = new Profile("noreply@JaspervSon.nl", "JaspervSon", "@JaspervSon", "Jasper van Son", Role.ADMINISTRATOR, null, "Hi ik ben Jasper", "Tilburg", "www.youtube.com");
+            em.persist(Jasper);
+            //Jasper.setGroup(administrator);
+            //em.merge(Jasper);
+
+            Profile Stefano = new Profile("noreply@StefanoVerhoeve.nl", "StefanoVerhoeve", "@StefanoVerhoeve", "Stefano Verhoeve", null, "Hi ik ben Stefano", "Neverland", "www.youtube.com");
+            em.persist(Stefano);
+            //Stefano.setGroup(profile);
+            //em.merge(Stefano);
+            Profile Wazzup = new Profile("noreply@Wazzup.nl", "Wazzup", "@Wazzup", "Wazzup", null, "Wolla", "Tilburg", "lemonparty.org");
+            em.persist(Wazzup);
+            //Wazzup.setGroup(profile);
+            //em.merge(Wazzup);
         } catch (ProfileException e) {
             e.printStackTrace();
         }
@@ -51,6 +71,8 @@ public class ProfileDAOJPA implements IProfileDAO {
     @Override
     public Profile getProfile(int id) {
         return em.find(Profile.class, id);
+        /*setupJPA();
+        return em.find(Profile.class, em.createQuery(cp.where(cb.equal(profileRoot.get("ID"), id))).getSingleResult().getEmail());*/
     }
 
     @Override
@@ -128,6 +150,13 @@ public class ProfileDAOJPA implements IProfileDAO {
     }
 
     @Override
+    public void removeKweet(String userTag, Kweet kweet) {
+        Profile profile = getProfile(userTag);
+        profile.RemoveKweet(kweet);
+        em.merge(profile);
+    }
+
+    @Override
     public void AddKweet(String userTag, Kweet kweet) {
         Profile profile = getProfile(userTag);
         profile.AddKweet(kweet);
@@ -139,5 +168,11 @@ public class ProfileDAOJPA implements IProfileDAO {
         cp = cb.createQuery(Profile.class);
         profileRoot = cp.from(Profile.class);
         cp.select(profileRoot);
+    }
+
+    public void setupProfileGroupJPA() {
+        cpg = cb.createQuery(ProfileGroup.class);
+        profileGroupRoot = cpg.from(ProfileGroup.class);
+        cpg.select(profileGroupRoot);
     }
 }

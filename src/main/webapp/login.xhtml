@@ -10,20 +10,20 @@
 </h:head>
 <h:body>
     <div class="container">
-        <div class="center">
+        <div class="login">
             <h:panelGroup>
-                <h:form id="logIn">
+                <h:form>
                     <h1>Administrator Login</h1>
                     <h:inputText a:placeholder="email" class="inputField" value="#{authenticationBean.email}"/>
                     <br/>
                     <h:inputSecret a:placeholder="password" class="inputField" value="#{authenticationBean.password}"/>
                     <br/>
                     <h:commandButton value="Log in" id="login" class="button"
-                                     actionListener="#{authenticationBean.authenticateAdmin()}"/>
+                                     action="#{authenticationBean.authenticateAdmin()}"/>
                 </h:form>
                 <br/>
                 <span>
-            Administrator:
+            <h:outputText value="#{authenticationBean.administrator.role}"/>:
             <h:outputText value="#{authenticationBean.administrator.userName}"/>
         </span>
             </h:panelGroup>

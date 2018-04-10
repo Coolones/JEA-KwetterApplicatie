@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
 
 public class ProfileServiceTest {
 
-    @Inject
+    /*@Inject
     ProfileService profileService;
 
     Profile profile;
@@ -64,12 +64,12 @@ public class ProfileServiceTest {
         assertEquals("JaspervSon", profile.getUserName());
     }*/
 
-    @Test(expected= ProfileException.class)
+    /*@Test(expected= ProfileException.class)
     public void EditProfile() throws ProfileException {
         Profile temp = new Profile(0, "noreply@JaspervSon.nl", "JaspervSon", "@JaspervSon", "Jasper van Son Joh", null, "Hi ik ben Jasper Joh", "Tilburg Joh", "www.youtube.com/Joh");
 
         profile.EditProfile(temp);
-    }
+    }*/
 
     /*@Test(expected= ProfileException.class)
     public void setBio() throws ProfileException {

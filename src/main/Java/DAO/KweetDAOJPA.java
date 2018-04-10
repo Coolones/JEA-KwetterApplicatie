@@ -132,6 +132,7 @@ public class KweetDAOJPA implements IKweetDAO {
 
     @Override
     public void RemoveKweet(Kweet kweet) {
+        kweet.Remove();
         em.remove(kweet);
     }
 

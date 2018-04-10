@@ -10,7 +10,7 @@ body {
     justify-content: center;
 }
 
-.center {
+.login {
     height: 275px;
     width: 280px;
     background-color: #ededed;
@@ -36,4 +36,13 @@ body {
     color: white;
     background-color: #42b3f4;
     border-radius: 5px;
+}
+
+.fillCell {
+    height: 100%;
+    width: 100%;
+}
+
+.noPadding {
+    padding: 0px;
 }

@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+    <title>Pure Administrator Power</title>
+    <h:outputStylesheet name="css/style.css"/>
+</h:head>
+<h:body>
+    <div class="container">
+        <div class="administration">
+            <h:panelGroup>
+                <h:form>
+                    <h:outputLabel value="Search profiles: "/>
+                    <h:inputText value="#{adminProfileBean.filter}" id="filter">
+                        <f:ajax event="keyup" execute="filter" render="profiles"/>
+                    </h:inputText>
+                </h:form>
+            </h:panelGroup>
+
+            <h:panelGroup id="profiles">
+                <h:form>
+                    <p:dataTable value="#{adminProfileBean.profiles}" var ="profile" selectionMode="single" rowKey="#{profile.userTag}">
+                        <p:ajax event="rowSelect" listener="#{adminProfileBean.selectProfile}"/>
+                        <p:column headerText="Usertag">
+                            <h:outputText value="#{profile.userTag}"/>
+                        </p:column>
+                        <p:column headerText="Username">
+                            <h:outputText value ="#{profile.userName}"/>
+                        </p:column>
+                        <p:column headerText="Email">
+                            <h:outputText value ="#{profile.email}"/>
+                        </p:column>
+                        <p:column class="noPadding" headerText="Role">
+                            <h:selectOneMenu class="fillCell" value="#{profile.role}" valueChangeListener="#{adminProfileBean.valueChanged}" onchange="submit()">
+                                <f:selectItems value="#{adminProfileBean.roleDropDown}"/>
+                            </h:selectOneMenu>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </h:panelGroup>
+        </div>
+        <br/>
+        <br/>
+        <div class="administration">
+            <h:panelGroup>
+                <h:form>
+                    <h:outputLabel value="Search kweets: "/>
+                    <h:inputText value="#{adminKweetBean.filter}" id="kweetFilter">
+                        <f:ajax event="keyup" execute="filter" render="kweets"/>
+                    </h:inputText>
+                </h:form>
+            </h:panelGroup>
+
+            <h:panelGroup id="kweets">
+                <h:form id="kweets-form">
+                    <p:dataTable id="kweets-table" value="#{adminKweetBean.kweets}" var ="kweet">
+                        <p:column headerText="Post date">
+                            <h:outputText value="#{kweet.postDate}"/>
+                        </p:column>
+                        <p:column headerText="Kweet">
+                            <h:outputText value ="#{kweet.kweet}"/>
+                        </p:column>
+                        <p:column headerText="">
+                            <p:commandButton value="Remove" actionListener="#{adminKweetBean.removeKweet(kweet)}" update=":kweets-form:kweets-table"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </h:panelGroup>
+        </div>
+    </div>
+</h:body>
+</html>
+

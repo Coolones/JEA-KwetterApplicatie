@@ -11,10 +11,11 @@ import iDAO.JPA;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import java.io.Serializable;
 import java.util.*;
 
 @Stateless
-public class KweetService {
+public class KweetService implements Serializable {
 
     @Inject
     @JPA
@@ -71,10 +72,11 @@ public class KweetService {
 
         Profile removerProfile = profileDAO.getProfile(removerID);
 
-        if (removerProfile.equals(getKweetByID(ID).getOwner()) ||
+        if (removerProfile.getID() == getKweetByID(ID).getOwner().getID() ||
                 removerProfile.getRole().equals(Role.MODERATOR) ||
                 removerProfile.getRole().equals(Role.ADMINISTRATOR)) {
 
+            profileDAO.removeKweet(getKweetByID(ID).getOwner().getUserTag(),getKweetByID(ID));
             kweetDAO.RemoveKweet(getKweetByID(ID));
         }
     }

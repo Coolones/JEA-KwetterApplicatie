@@ -27,18 +27,18 @@ public class Kweet implements Serializable {
     private String kweet;
     private Date postDate;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "kweet_mention")
     @LazyCollection(LazyCollectionOption.FALSE)
     @XmlTransient
     @JsonIgnore
     private List<Profile> mentions;
-    @ManyToMany(cascade = CascadeType.PERSIST, mappedBy ="kweets")
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "kweets")
     @LazyCollection(LazyCollectionOption.FALSE)
     @XmlTransient
     @JsonIgnore
     private List<Trend> trends;
-    @ManyToMany(cascade=CascadeType.PERSIST)
+    @ManyToMany(cascade=CascadeType.ALL)
     @JoinTable(name = "kweet_appreciate")
     @LazyCollection(LazyCollectionOption.FALSE)
     @XmlTransient
@@ -86,6 +86,10 @@ public class Kweet implements Serializable {
         if (!appreciatedBy.contains(profile)) {
             appreciatedBy.add(profile);
         }
+    }
+
+    public boolean SearchKweet(String search) {
+        return kweet.toLowerCase().contains(search) || owner.SearchProfile(search);
     }
 
     public void AddTrend(Trend trend) {
