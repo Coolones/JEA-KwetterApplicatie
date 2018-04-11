@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="8" failures="0" name="Domain.KweetTest" time="0.015" errors="0" skipped="0">
+<testsuite tests="8" failures="0" name="Domain.KweetTest" time="0" errors="0" skipped="0">
   <properties>
     <property name="idea.version" value="2017.3.4"/>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
@@ -62,12 +62,12 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="Domain.KweetTest" name="getMentions" time="0.015"/>
+  <testcase classname="Domain.KweetTest" name="getKweetID" time="0"/>
   <testcase classname="Domain.KweetTest" name="appreciatieKweet" time="0"/>
+  <testcase classname="Domain.KweetTest" name="getPostDate" time="0"/>
+  <testcase classname="Domain.KweetTest" name="getMentions" time="0"/>
   <testcase classname="Domain.KweetTest" name="getTrends" time="0"/>
+  <testcase classname="Domain.KweetTest" name="getAppreciatedBy" time="0"/>
   <testcase classname="Domain.KweetTest" name="getKweet" time="0"/>
   <testcase classname="Domain.KweetTest" name="getOwnerTag" time="0"/>
-  <testcase classname="Domain.KweetTest" name="getKweetID" time="0"/>
-  <testcase classname="Domain.KweetTest" name="getPostDate" time="0"/>
-  <testcase classname="Domain.KweetTest" name="getAppreciatedBy" time="0"/>
 </testsuite>
