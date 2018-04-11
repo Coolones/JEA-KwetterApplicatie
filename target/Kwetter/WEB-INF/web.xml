@@ -29,7 +29,7 @@
         <welcome-file>login.xhtml</welcome-file>
     </welcome-file-list>
 
-    <!--<login-config>
+    <login-config>
         <auth-method>FORM</auth-method>
         <realm-name>security_realmKwetter</realm-name>
         <form-login-config>
@@ -62,5 +62,5 @@
     <security-role>
         <description/>
         <role-name>Profile</role-name>
-    </security-role>-->
+    </security-role>
 </web-app>

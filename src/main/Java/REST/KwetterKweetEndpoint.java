@@ -106,9 +106,9 @@ public class KwetterKweetEndpoint {
     }
 
     @POST
-    @Path("/{myID}/appreciateKweet/{kweetID}")
-    public Response apreciateKweet(@PathParam("myID") int myID, @PathParam("kweetID") int kweetID) {
-        kweetService.AppreciateKweet(myID, kweetID);
+    @Path("/{myEmail}/appreciateKweet/{kweetID}")
+    public Response apreciateKweet(@PathParam("myEmail") String myEmail, @PathParam("kweetID") int kweetID) {
+        kweetService.AppreciateKweet(myEmail, kweetID);
         return Response.ok().build();
     }
 
@@ -119,10 +119,10 @@ public class KwetterKweetEndpoint {
     }
 
     @DELETE
-    @Path("/{removerID}/{ID}")
+    @Path("/{removerEmail}/{ID}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void RemoveKweet(@PathParam("removerID") int removerID, @PathParam("ID") int ID) {
-        kweetService.RemoveKweet(removerID, ID);
+    public void RemoveKweet(@PathParam("removerEmail") String removerEmail, @PathParam("ID") int ID) {
+        kweetService.RemoveKweet(removerEmail, ID);
     }
 
     private GenericEntity<List<Kweet>> EncloseKweets(List<Kweet> kweets) {

@@ -3,6 +3,7 @@ package Domain;
 import Domain.Models.ProfileModel;
 import Exceptions.ProfileException;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -18,13 +19,13 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Profile implements Serializable {
 
-    @Id
+    //@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @XmlTransient
     @JsonIgnore
     private int ID;
 
-    //@Id
+    @Id
     /*@XmlTransient
     @JsonIgnore*/
     @Column(unique = true)
@@ -62,12 +63,12 @@ public class Profile implements Serializable {
     private List<Profile> followers;
 
 
-    /*@ManyToOne
+    @ManyToOne
     @JoinTable(name = "profile_profileGroup", joinColumns = @JoinColumn(name = "email", referencedColumnName = "email"),
             inverseJoinColumns = @JoinColumn(name = "groupName", referencedColumnName = "groupName"))
     @XmlTransient
     @JsonIgnore
-    private ProfileGroup group;*/
+    private ProfileGroup group;
 
     public Profile() {}
 
@@ -209,13 +210,13 @@ public class Profile implements Serializable {
         return this;
     }
 
-    /*public ProfileGroup getGroup() {
+    public ProfileGroup getGroup() {
         return group;
     }
 
     public void setGroup(ProfileGroup group) {
         this.group = group;
-    }*/
+    }
 
     public boolean SearchProfile(String search) {
         return email.toLowerCase().contains(search) || userTag.toLowerCase().contains(search) || userName.toLowerCase().contains(search);
@@ -242,7 +243,7 @@ public class Profile implements Serializable {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = DigestUtils.sha256Hex(password);
     }
 
     public String getUserTag() {

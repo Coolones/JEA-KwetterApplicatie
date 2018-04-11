@@ -38,25 +38,28 @@ public class ProfileDAOJPA implements IProfileDAO {
         setupJPA();
 
         try {
-            /*ProfileGroup profile = new ProfileGroup("PROFILE");
+            ProfileGroup profile = new ProfileGroup("PROFILE");
             em.persist(profile);
             em.persist(new ProfileGroup("MODERATOR"));
             ProfileGroup administrator = new ProfileGroup("ADMINISTRATOR");
-            em.persist(administrator);*/
+            em.persist(administrator);
 
             Profile Jasper = new Profile("noreply@JaspervSon.nl", "JaspervSon", "@JaspervSon", "Jasper van Son", Role.ADMINISTRATOR, null, "Hi ik ben Jasper", "Tilburg", "www.youtube.com");
+            Jasper.setPassword(Jasper.getPassword());
             em.persist(Jasper);
-            //Jasper.setGroup(administrator);
-            //em.merge(Jasper);
+            Jasper.setGroup(administrator);
+            em.merge(Jasper);
 
             Profile Stefano = new Profile("noreply@StefanoVerhoeve.nl", "StefanoVerhoeve", "@StefanoVerhoeve", "Stefano Verhoeve", null, "Hi ik ben Stefano", "Neverland", "www.youtube.com");
+            Stefano.setPassword(Stefano.getPassword());
             em.persist(Stefano);
-            //Stefano.setGroup(profile);
-            //em.merge(Stefano);
+            Stefano.setGroup(profile);
+            em.merge(Stefano);
             Profile Wazzup = new Profile("noreply@Wazzup.nl", "Wazzup", "@Wazzup", "Wazzup", null, "Wolla", "Tilburg", "lemonparty.org");
+            Wazzup.setPassword(Wazzup.getPassword());
             em.persist(Wazzup);
-            //Wazzup.setGroup(profile);
-            //em.merge(Wazzup);
+            Wazzup.setGroup(profile);
+            em.merge(Wazzup);
         } catch (ProfileException e) {
             e.printStackTrace();
         }
@@ -70,9 +73,9 @@ public class ProfileDAOJPA implements IProfileDAO {
 
     @Override
     public Profile getProfile(int id) {
-        return em.find(Profile.class, id);
-        /*setupJPA();
-        return em.find(Profile.class, em.createQuery(cp.where(cb.equal(profileRoot.get("ID"), id))).getSingleResult().getEmail());*/
+        //return em.find(Profile.class, id);
+        setupJPA();
+        return em.createQuery(cp.where(cb.equal(profileRoot.get("ID"), id))).getSingleResult();
     }
 
     @Override
@@ -154,6 +157,15 @@ public class ProfileDAOJPA implements IProfileDAO {
         Profile profile = getProfile(userTag);
         profile.RemoveKweet(kweet);
         em.merge(profile);
+    }
+
+    @Override
+    public Profile getProfileByEmail(String email) {
+        return em.find(Profile.class, email);
+    }
+
+    @Override
+    public void Load() {
     }
 
     @Override

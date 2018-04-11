@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.Serializable;
 import java.security.Principal;
 
@@ -24,24 +25,48 @@ public class AuthenticationBean implements Serializable {
     private String password;
     private Profile administrator;
 
-    public String authenticateAdmin() {
+    public String login() {
 
-        /*FacesContext context = FacesContext.getCurrentInstance();
+        // Preload database
+        profileService.Load();
+
+        FacesContext context = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
 
         try {
             request.login(email, password);
 
             Principal principal = request.getUserPrincipal();
-            administrator = profileService.getProfile(principal.getName());*/
+            administrator = profileService.getProfileByEmail(principal.getName());
 
-            administrator = profileService.AuthenticateAdmin(email, password);
-            if (administrator != null && (administrator.getRole() == Role.MODERATOR || administrator.getRole() == Role.ADMINISTRATOR)) return "admin/administrator.xhtml?faces-redirect=true";
-            else return "error/invalidAccount.xhtml?faces-redirect=true";
-        /*} catch (ServletException e) {
+            //administrator = profileService.AuthenticateAdmin(email, password);
+            if (request.isUserInRole("Moderator") || request.isUserInRole("Administrator")) return "admin/administrator.xhtml?faces-redirect=true";
+            else {
+                ((HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false)).invalidate();
+                return "error/invalidAccount.xhtml?faces-redirect=true";
+            }
+        } catch (ServletException e) {
             System.out.println(e.getStackTrace().toString());
+            ((HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false)).invalidate();
             return "error/invalidAccount.xhtml?faces-redirect=true";
-        }*/
+        }
+    }
+
+    public String logout() {
+
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+
+        try {
+            administrator = null;
+            request.logout();
+            ((HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false)).invalidate();
+            return "/login.html?faces-redirect=true";
+        } catch (ServletException e) {
+            e.printStackTrace();
+            ((HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false)).invalidate();
+            return "/login.html?faces-redirect=true";
+        }
     }
 
     public String getEmail() {

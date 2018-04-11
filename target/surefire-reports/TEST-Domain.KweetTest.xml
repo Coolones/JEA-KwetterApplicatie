@@ -62,12 +62,12 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="Domain.KweetTest" name="getPostDate" time="0"/>
-  <testcase classname="Domain.KweetTest" name="appreciatieKweet" time="0"/>
-  <testcase classname="Domain.KweetTest" name="getOwnerTag" time="0"/>
-  <testcase classname="Domain.KweetTest" name="getTrends" time="0"/>
-  <testcase classname="Domain.KweetTest" name="getMentions" time="0"/>
   <testcase classname="Domain.KweetTest" name="getKweetID" time="0"/>
-  <testcase classname="Domain.KweetTest" name="getKweet" time="0"/>
+  <testcase classname="Domain.KweetTest" name="appreciatieKweet" time="0"/>
+  <testcase classname="Domain.KweetTest" name="getPostDate" time="0"/>
+  <testcase classname="Domain.KweetTest" name="getMentions" time="0"/>
+  <testcase classname="Domain.KweetTest" name="getTrends" time="0"/>
   <testcase classname="Domain.KweetTest" name="getAppreciatedBy" time="0"/>
+  <testcase classname="Domain.KweetTest" name="getKweet" time="0"/>
+  <testcase classname="Domain.KweetTest" name="getOwnerTag" time="0"/>
 </testsuite>

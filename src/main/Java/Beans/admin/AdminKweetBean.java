@@ -1,18 +1,26 @@
 package Beans.admin;
 
 import Domain.Kweet;
+import Domain.Profile;
 import Service.KweetService;
+import Service.ProfileService;
 
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
 @Named
 @SessionScoped
 public class AdminKweetBean implements Serializable {
+
+    @Inject
+    private ProfileService profileService;
 
     @Inject
     private KweetService kweetService;
@@ -42,7 +50,14 @@ public class AdminKweetBean implements Serializable {
     }
 
     public void removeKweet(Kweet kweet) {
-        kweetService.RemoveKweet(1, kweet.getID());
+
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+
+        Principal principal = request.getUserPrincipal();
+        Profile administrator = profileService.getProfileByEmail(principal.getName());
+
+        kweetService.RemoveKweet(administrator.getEmail(), kweet.getID());
         getKweets();
     }
 

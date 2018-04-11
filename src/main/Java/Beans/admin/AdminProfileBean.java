@@ -7,10 +7,13 @@ import Service.ProfileService;
 import org.primefaces.event.SelectEvent;
 
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -52,8 +55,14 @@ public class AdminProfileBean implements Serializable {
 
     public void valueChanged(ValueChangeEvent event) {
         try {
-            selectedRole = event.getNewValue().toString();
-            if (selectedProfile != null) profileService.setRole(1, selectedProfile.getUserTag(), selectedRole);
+                FacesContext context = FacesContext.getCurrentInstance();
+                HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+
+                Principal principal = request.getUserPrincipal();
+                Profile administrator = profileService.getProfileByEmail(principal.getName());
+
+                selectedRole = event.getNewValue().toString();
+            if (selectedProfile != null && administrator != null) profileService.setRole(administrator.getEmail(), selectedProfile.getUserTag(), selectedRole);
         } catch (ProfileException e) {
             e.printStackTrace();
         }

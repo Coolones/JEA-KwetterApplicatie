@@ -6,6 +6,7 @@ import Domain.Role;
 import Exceptions.ProfileException;
 import iDAO.IProfileDAO;
 import iDAO.JPA;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -29,6 +30,10 @@ public class ProfileService implements Serializable {
         return profileDAO.getProfile(id);
     }
 
+    public Profile getProfileByEmail(String email) {
+        return profileDAO.getProfileByEmail(email);
+    }
+
     public Profile getProfile(String userTag) {
         return profileDAO.getProfile(userTag);
     }
@@ -42,6 +47,7 @@ public class ProfileService implements Serializable {
         if (!IsUniqueUserTag(profile.getUserTag()) || profile.getUserTag().isEmpty() || profile.getUserName().isEmpty() || profile.getBio().length() > 160) {
             throw new ProfileException("Please make sure everything is filled in correctly");
         }
+        profile.setPassword(profile.getPassword());
         return profileDAO.AddProfile(profile);
     }
 
@@ -56,9 +62,9 @@ public class ProfileService implements Serializable {
         return profileDAO.IsUniqueUserTag(userTag);
     }
 
-    public void setRole(int changerID, String userTag, String role) throws ProfileException {
+    public void setRole(String changerEmail, String userTag, String role) throws ProfileException {
 
-        if (getProfile(changerID).getRole() != Role.PROFILE && !IsUniqueUserTag(userTag)) {
+        if (getProfileByEmail(changerEmail).getRole() != Role.PROFILE && !IsUniqueUserTag(userTag)) {
             Role enumRole;
 
             switch (role) {
@@ -108,5 +114,9 @@ public class ProfileService implements Serializable {
     public Profile AuthenticateAdmin(String email, String password) {
         Profile admin = Authenticate(email, password);
         return  admin != null && (admin.getRole() == Role.ADMINISTRATOR || admin.getRole() == Role.MODERATOR) ? admin : null;
+    }
+
+    public void Load() {
+        profileDAO.Load();
     }
 }

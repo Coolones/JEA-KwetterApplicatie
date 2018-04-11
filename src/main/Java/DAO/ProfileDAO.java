@@ -135,4 +135,19 @@ public class ProfileDAO implements IProfileDAO {
     public void removeKweet(String userTag, Kweet kweet) {
 
     }
+
+    @Override
+    public Profile getProfileByEmail(String email) {
+
+        for (Profile profile : profiles) {
+            if (profile.getEmail().equals(email)) return profile;
+        }
+
+        return null;
+    }
+
+    @Override
+    public void Load() {
+
+    }
 }

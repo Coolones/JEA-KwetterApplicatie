@@ -36,4 +36,8 @@ public interface IProfileDAO {
     void removeProfile(Profile profile);
 
     void removeKweet(String userTag, Kweet kweet);
+
+    Profile getProfileByEmail(String email);
+
+    void Load();
 }
