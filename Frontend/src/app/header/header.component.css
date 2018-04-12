@@ -1,0 +1,33 @@
+#header {
+  width: 100%;
+  max-height: 150px;
+  display: flex;
+  justify-content: space-between;
+  color: white;
+  background-color: #39A0CE;
+}
+
+#header > * {
+  width: 150px;
+  height: 100px;
+  margin: 25px;
+}
+
+img {
+  width: 150px;
+  height: 100px;
+}
+
+h1 {
+  text-align: center;
+}
+
+.header-btn {
+  height: 40px;
+  width: 100px;
+  margin: 30px 25px 30px 25px;
+  border-radius: 5px;
+  color: #39A0CE;
+  background-color: white;
+  font-size: 18px;
+}
